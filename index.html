@@ -1,366 +1,211 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I. E. Antonio Derka Santo Domingo | Inventario Físico</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Inventario I.E. Antonio Derka Santo Domingo</title>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fuente Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Lector Óptico QR / Códigos de Barras con Cámara -->
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <!-- Generador de Etiquetas QR -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <!-- QR Code Generator & Scanner -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #f8fafc;
+            color: #0f172a;
+            -webkit-tap-highlight-color: transparent;
         }
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .card-hover {
-            transition: transform 0.18s ease, box-shadow 0.18s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-        }
-        /* Estilos optimizados para Imprimir / Guardar PDF */
-        @media print {
-            body {
-                background-color: #ffffff !important;
-                color: #000000 !important;
-            }
-            .no-print {
-                display: none !important;
-            }
-            .print-only {
-                display: block !important;
-            }
-            main {
-                max-width: 100% !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-            table {
-                width: 100% !important;
-                border-collapse: collapse !important;
-                font-size: 11px !important;
-            }
-            th, td {
-                border: 1px solid #cbd5e1 !important;
-                padding: 6px 8px !important;
-            }
-            thead {
-                background-color: #f1f5f9 !important;
-                -webkit-print-color-adjust: exact;
-            }
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .modal-backdrop { background-color: rgba(15, 23, 42, 0.65); backdrop-filter: blur(2px); }
     </style>
 </head>
-<body class="text-slate-800 antialiased min-h-screen flex flex-col pb-16 md:pb-0">
+<body class="min-h-screen flex flex-col">
 
-    <!-- Barra de Navegación Superior Institucional -->
-    <header class="bg-slate-900 text-white sticky top-0 z-30 shadow-md no-print">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3.5 pb-3 space-y-3">
-            
-            <!-- Bloque Institucional Centrado: Escudo + Nombre del Colegio + Título -->
-            <div class="flex flex-col items-center justify-center text-center relative">
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-                    <!-- Contenedor del Escudo Institucional (Clic para cargar el PNG/JPG oficial) -->
-                    <div class="relative group cursor-pointer shrink-0" onclick="document.getElementById('inputLogoColegio').click()" title="Haz clic para cargar el escudo oficial de la I.E. (PNG/JPG)">
-                        <div id="headerLogoWrapper" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white p-1.5 shadow-lg border-2 border-sky-400/60 flex items-center justify-center overflow-hidden transition group-hover:scale-105">
-                            <!-- Escudo SVG Institucional por defecto -->
-                            <svg id="svgEscudoDefault" viewBox="0 0 100 115" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M50 5 L92 20 V58 C92 85 72 103 50 110 C28 103 8 85 8 58 V20 Z" fill="#0f3d68" stroke="#facc15" stroke-width="4"/>
-                                <path d="M50 12 L85 24 V57 C85 80 68 95 50 102 C32 95 15 80 15 57 V24 Z" fill="#ffffff"/>
-                                <path d="M15 48 H85 V57 C85 80 68 95 50 102 C32 95 15 80 15 57 Z" fill="#15803d"/>
-                                <path d="M15 24 L50 12 L85 24 V48 H15 Z" fill="#0284c7"/>
-                                <!-- Libro abierto y antorcha del saber -->
-                                <path d="M30 42 Q40 38 50 43 Q60 38 70 42 V56 Q60 52 50 57 Q40 52 30 56 Z" fill="#ffffff" stroke="#0f3d68" stroke-width="1.5"/>
-                                <circle cx="50" cy="27" r="6" fill="#facc15"/>
-                                <text x="50" y="79" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">IEAD</text>
-                                <text x="50" y="91" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="#fef08a" text-anchor="middle">MEDELLÍN</text>
-                            </svg>
-                            <img id="imgEscudoCustom" src="" alt="Escudo I. E. Antonio Derka Santo Domingo" class="hidden w-full h-full object-contain">
-                        </div>
-                        <span class="absolute -bottom-1 -right-1 bg-indigo-600 text-white p-1 rounded-full shadow border border-slate-900 opacity-90 group-hover:opacity-100" title="Cambiar escudo">
-                            <i data-lucide="camera" class="w-3 h-3"></i>
-                        </span>
-                        <input type="file" id="inputLogoColegio" accept="image/*" class="hidden" onchange="cargarLogoInstitucional(event)">
-                    </div>
-
-                    <!-- Títulos Institucionales Bien Centrados -->
-                    <div class="text-center">
-                        <h1 class="text-lg sm:text-2xl font-extrabold tracking-tight text-white leading-tight">
-                            I. E. Antonio Derka Santo Domingo
-                        </h1>
-                        <div class="mt-1 flex flex-wrap items-center justify-center gap-2">
-                            <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-sky-300">
-                                Inventario Físico
-                            </span>
-                            <span class="hidden sm:inline text-slate-500">•</span>
-                            <span class="text-xs text-slate-300">
-                                Laboratorios de Física y Electrónica
-                            </span>
-                        </div>
-                    </div>
+    <!-- Barra Superior -->
+    <header class="sticky top-0 z-30 bg-indigo-950 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 py-3 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-9 h-9 rounded-xl bg-indigo-600/40 border border-indigo-400/30 flex items-center justify-center shrink-0">
+                    <i data-lucide="qr-code" class="w-5 h-5 text-indigo-200"></i>
+                </div>
+                <div class="min-w-0">
+                    <h1 class="text-sm sm:text-base font-bold leading-tight truncate">
+                        I.E. Antonio Derka Santo Domingo
+                    </h1>
+                    <p class="text-[11px] text-indigo-200 truncate">
+                        Inventario de Laboratorios y Áreas
+                    </p>
                 </div>
             </div>
 
-            <!-- Barra Secundaria: Estado de Conexión + Pestañas + Botones de Acción -->
-            <div class="pt-2.5 border-t border-slate-800/90 flex flex-wrap items-center justify-between gap-2.5">
-                <!-- Indicador de Conexión -->
-                <div class="flex items-center gap-2">
-                    <span id="badgeEstadoConexion" onclick="abrirModalConexion()" class="cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 transition hover:bg-amber-500/30">
-                        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                        Modo Local
-                    </span>
-                    <button id="btnRestaurarEscudo" onclick="restaurarLogoDefault()" class="hidden text-[11px] text-slate-400 hover:text-slate-200 underline">
-                        Escudo por defecto
-                    </button>
+            <!-- Acciones principales -->
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <button type="button" onclick="abrirEscaner()" class="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-semibold text-xs sm:text-sm px-3 py-2 rounded-xl transition cursor-pointer">
+                    <i data-lucide="scan-line" class="w-4 h-4"></i>
+                    <span>Escanear</span>
+                </button>
+
+                <button type="button" onclick="abrirModal()" class="inline-flex items-center gap-1.5 bg-indigo-500 hover:bg-indigo-400 active:scale-95 text-white font-semibold text-xs sm:text-sm px-3 py-2 rounded-xl transition cursor-pointer">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Nuevo</span>
+                </button>
+
+                <button type="button" onclick="abrirModalSheet()" title="Conectar Google Sheets" class="inline-flex items-center gap-1 bg-indigo-800/80 hover:bg-indigo-700 text-indigo-100 text-xs font-medium px-2.5 py-2 rounded-xl border border-indigo-600/50 transition cursor-pointer">
+                    <span id="dotSheet" class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    <span class="hidden md:inline" id="labelSheet">Sheet</span>
+                    <i data-lucide="database" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Barra secundaria de sincronización y exportación -->
+        <div class="bg-indigo-900/70 border-t border-indigo-800/70">
+            <div class="max-w-7xl mx-auto px-3 sm:px-6 py-1.5 flex items-center justify-between gap-2 text-xs">
+                <div class="flex items-center gap-2 min-w-0">
+                    <span id="estadoSyncTexto" class="text-indigo-200 truncate">Modo local listo</span>
                 </div>
-
-                <!-- Navegación Desktop (Pestañas) -->
-                <nav class="hidden md:flex items-center bg-slate-800/90 p-1 rounded-xl border border-slate-700/80">
-                    <button id="tabBtnInventarioDesk" onclick="cambiarVista('inventario')" class="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-semibold bg-indigo-600 text-white shadow-sm transition">
-                        <i data-lucide="boxes" class="w-4 h-4"></i>
-                        <span>Inventario</span>
+                <div class="flex items-center gap-3 shrink-0">
+                    <button type="button" onclick="sincronizarDesdeSheets(true)" id="btnSync" class="inline-flex items-center gap-1 text-indigo-100 hover:text-white font-medium cursor-pointer">
+                        <i data-lucide="refresh-cw" id="iconoSync" class="w-3.5 h-3.5"></i>
+                        <span>Sincronizar</span>
                     </button>
-                    <button id="tabBtnReportesDesk" onclick="cambiarVista('reportes')" class="flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white transition">
-                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
-                        <span>Reportes y Filtros</span>
-                    </button>
-                </nav>
-
-                <!-- Acciones de Sincronización y Nuevo Ítem -->
-                <div class="flex items-center gap-2 ml-auto md:ml-0">
-                    <button onclick="abrirEscanerQR('buscar')" title="Escanear QR con cámara del celular" class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold px-3 py-2 rounded-xl shadow-sm transition">
-                        <i data-lucide="scan-line" class="w-4 h-4"></i>
-                        <span>Escanear QR</span>
-                    </button>
-
-                    <button onclick="sincronizarDesdeSheets()" id="btnSincronizar" title="Sincronizar con Google Sheets" class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-medium px-3 py-2 rounded-xl border border-slate-700 transition">
-                        <i data-lucide="refresh-cw" id="iconoSync" class="w-4 h-4 text-emerald-400"></i>
-                        <span class="hidden lg:inline">Sincronizar</span>
-                    </button>
-
-                    <button onclick="abrirModalConexion()" title="Conectar Google Sheet" class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-medium px-3 py-2 rounded-xl border border-slate-700 transition">
-                        <i data-lucide="sheet" class="w-4 h-4 text-sky-400"></i>
-                        <span class="hidden sm:inline">Conectar Sheet</span>
-                    </button>
-
-                    <button onclick="abrirModal()" class="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-xl shadow-sm transition">
-                        <i data-lucide="plus-circle" class="w-4 h-4"></i>
-                        <span>Nuevo Ítem</span>
+                    <button type="button" onclick="exportarCSV()" class="inline-flex items-center gap-1 text-indigo-200 hover:text-white font-medium cursor-pointer">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                        <span>CSV</span>
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Navegación Inferior para Móviles (Cómoda con una mano) -->
-    <nav class="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-slate-200 flex items-center justify-around py-1.5 shadow-lg no-print">
-        <button id="tabBtnInventarioMob" onclick="cambiarVista('inventario')" class="flex flex-col items-center gap-0.5 text-indigo-600 font-semibold text-[11px] px-3 py-1">
-            <i data-lucide="boxes" class="w-5 h-5"></i>
-            <span>Inventario</span>
-        </button>
-        <button onclick="abrirEscanerQR('buscar')" class="flex flex-col items-center gap-0.5 text-emerald-600 font-semibold text-[11px] px-3 py-1">
-            <i data-lucide="scan-line" class="w-5 h-5"></i>
-            <span>Escanear QR</span>
-        </button>
-        <button onclick="abrirModal()" class="flex flex-col items-center justify-center -mt-6 bg-indigo-600 text-white w-12 h-12 rounded-full shadow-lg border-4 border-slate-50">
-            <i data-lucide="plus" class="w-6 h-6"></i>
-        </button>
-        <button id="tabBtnReportesMob" onclick="cambiarVista('reportes')" class="flex flex-col items-center gap-0.5 text-slate-500 font-medium text-[11px] px-3 py-1">
-            <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
-            <span>Reportes</span>
-        </button>
-    </nav>
+    <!-- Contenido Principal -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 space-y-4">
 
-    <!-- Contenedor Principal -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Tarjetas de Resumen -->
+        <section class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-xs">
+                <p class="text-[11px] font-medium text-slate-500 uppercase">Referencias</p>
+                <p id="statReferencias" class="text-2xl font-bold text-slate-800 mt-0.5">0</p>
+            </div>
+            <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-xs">
+                <p class="text-[11px] font-medium text-slate-500 uppercase">Unidades Totales</p>
+                <p id="statUnidades" class="text-2xl font-bold text-indigo-600 mt-0.5">0</p>
+            </div>
+            <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-xs">
+                <p class="text-[11px] font-medium text-slate-500 uppercase">Buen Estado</p>
+                <p id="statBuenos" class="text-2xl font-bold text-emerald-600 mt-0.5">0</p>
+            </div>
+            <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 shadow-xs">
+                <p class="text-[11px] font-medium text-slate-500 uppercase">Mantenimiento</p>
+                <p id="statMantenimiento" class="text-2xl font-bold text-amber-600 mt-0.5">0</p>
+            </div>
+        </section>
 
-        <!-- ========================================================= -->
-        <!-- VISTA 1: INVENTARIO (CRUD EN TIEMPO REAL)                 -->
-        <!-- ========================================================= -->
-        <div id="vistaInventario" class="space-y-6">
-            <!-- Tarjetas de Resumen Rápido -->
-            <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3.5">
-                    <div class="p-3 bg-indigo-50 text-indigo-600 rounded-xl">
-                        <i data-lucide="layers" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Ítems Distintos</p>
-                        <p id="statTotalRegistros" class="text-2xl font-bold text-slate-900">0</p>
-                    </div>
+        <!-- Filtros y Búsqueda -->
+        <section class="bg-white rounded-2xl p-3.5 sm:p-4 border border-slate-200/80 shadow-xs space-y-3">
+            <div class="flex flex-col sm:flex-row gap-2.5">
+                <div class="relative flex-1">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                    <input id="busquedaTexto" type="text" oninput="renderizarInventario()" placeholder="Buscar por nombre, código QR, ID o ubicación..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
 
-                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3.5">
-                    <div class="p-3 bg-emerald-50 text-emerald-600 rounded-xl">
-                        <i data-lucide="boxes" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Unidades Totales</p>
-                        <p id="statTotalUnidades" class="text-2xl font-bold text-slate-900">0</p>
-                    </div>
-                </div>
+                <select id="filtroArea" onchange="renderizarInventario()" class="w-full sm:w-auto px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option value="Todas">Área: Todas</option>
+                    <option value="Electrónica">Electrónica</option>
+                    <option value="Física">Física</option>
+                </select>
 
-                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3.5">
-                    <div class="p-3 bg-amber-50 text-amber-600 rounded-xl">
-                        <i data-lucide="wrench" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Mantenimiento</p>
-                        <p id="statMantenimiento" class="text-2xl font-bold text-amber-600">0</p>
-                    </div>
-                </div>
+                <select id="filtroEstado" onchange="renderizarInventario()" class="w-full sm:w-auto px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <option value="Todos">Estado: Todos</option>
+                    <option value="Excelente">Excelente</option>
+                    <option value="Bueno">Bueno</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Requiere Mantenimiento">Requiere Mantenimiento</option>
+                    <option value="Desecho">Desecho</option>
+                    <option value="Dado de Baja">Dado de Baja</option>
+                </select>
 
-                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-3.5">
-                    <div class="p-3 bg-rose-50 text-rose-600 rounded-xl">
-                        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Para Desecho</p>
-                        <p id="statDesecho" class="text-2xl font-bold text-rose-600">0</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Barra de Búsqueda y Filtros de Vista Principal -->
-            <section class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                    <div class="relative flex-1 flex items-center gap-2">
-                        <div class="relative flex-1">
-                            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-                            <input type="text" id="buscadorInput" oninput="renderizarInventario()" placeholder="Buscar por nombre, código QR/serie, ubicación..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
-                        </div>
-                        <button onclick="abrirEscanerQR('buscar')" title="Buscar escaneando QR con cámara" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-xl text-xs sm:text-sm font-semibold transition">
-                            <i data-lucide="camera" class="w-4 h-4"></i>
-                            <span class="hidden sm:inline">Lector QR</span>
-                        </button>
-                    </div>
-
-                    <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-                        <select id="filtroArea" onchange="renderizarInventario()" class="w-full sm:w-auto px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="Todas">Área: Todas</option>
-                            <option value="Electrónica">Electrónica</option>
-                            <option value="Física">Física</option>
-                        </select>
-
-                        <select id="filtroEstado" onchange="renderizarInventario()" class="w-full sm:w-auto px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="Todos">Estado: Todos</option>
-                            <option value="Excelente">Excelente</option>
-                            <option value="Bueno">Bueno</option>
-                            <option value="Requiere Mantenimiento">Requiere Mantenimiento</option>
-                            <option value="Desecho">Desecho</option>
-                        </select>
-
-                        <button onclick="confirmarRestablecer()" title="Restaurar 12 ejemplos iniciales" class="p-2.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl border border-slate-200 transition">
-                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Pills de las 6 Clasificaciones -->
-                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1" id="contenedorPillsCategorias"></div>
-            </section>
-
-            <!-- Cuadrícula de Elementos -->
-            <section>
-                <div class="flex items-center justify-between mb-3">
-                    <h2 class="text-sm font-semibold text-slate-600 uppercase tracking-wider">
-                        Elementos Registrados (<span id="contadorFiltrados">0</span>)
-                    </h2>
-                    <span id="textoUltimaSync" class="text-xs text-slate-400">Respaldo local activo</span>
-                </div>
-
-                <div id="gridInventario" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
-
-                <!-- Estado Vacío -->
-                <div id="estadoVacio" class="hidden bg-white rounded-2xl border border-dashed border-slate-300 p-10 text-center">
-                    <div class="mx-auto w-12 h-12 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mb-3">
-                        <i data-lucide="package-search" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-base font-semibold text-slate-800">No se encontraron elementos</h3>
-                    <p class="text-sm text-slate-500 mt-1 max-w-md mx-auto">Ajusta los filtros o agrega un nuevo elemento al inventario.</p>
-                    <button onclick="abrirModal()" class="mt-4 inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
-                        <i data-lucide="plus" class="w-4 h-4"></i> Registrar Nuevo Ítem
-                    </button>
-                </div>
-            </section>
-        </div>
-
-        <!-- ========================================================= -->
-        <!-- VISTA 2: REPORTES AVANZADOS POR FILTROS Y EXPORTACIÓN     -->
-        <!-- ========================================================= -->
-        <div id="vistaReportes" class="hidden space-y-6">
-
-            <!-- Encabezado Formal Institucional solo visible al Imprimir / PDF -->
-            <div class="hidden print-only border-b-2 border-slate-800 pb-4 mb-4">
-                <div class="flex items-center justify-between gap-4">
-                    <div id="printLogoContainer" class="w-16 h-16 shrink-0 flex items-center justify-center">
-                        <!-- Se clona dinámicamente el escudo activo al imprimir -->
-                    </div>
-                    <div class="text-center flex-1">
-                        <h1 class="text-lg font-extrabold uppercase tracking-tight text-slate-900">
-                            I. E. Antonio Derka Santo Domingo
-                        </h1>
-                        <h2 class="text-sm font-bold uppercase text-slate-700">
-                            Inventario Físico — Laboratorios de Física y Electrónica
-                        </h2>
-                        <p class="text-xs text-slate-500 mt-0.5">Media Técnica Grado 11° • Medellín, Antioquia</p>
-                    </div>
-                    <div class="text-right text-xs shrink-0">
-                        <p><strong>Fecha:</strong> <span id="printFecha"></span></p>
-                        <p class="max-w-[190px] truncate"><strong>Filtros:</strong> <span id="printResumenFiltros"></span></p>
-                    </div>
-                </div>
+                <button type="button" onclick="confirmarRestablecer()" title="Restaurar ejemplos iniciales" class="p-2.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl border border-slate-200 transition self-end sm:self-auto cursor-pointer">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                </button>
             </div>
 
-            <!-- Panel de Filtros Combinables -->
-            <section class="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-sm space-y-4 no-print">
-                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                    <div class="flex items-center gap-2">
-                        <div class="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
-                            <i data-lucide="filter" class="w-4 h-4"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-base font-bold text-slate-900">Generador de Reportes por Filtros</h2>
-                            <p class="text-xs text-slate-500">Combina criterios para auditar existencias, estados o ubicaciones específicas</p>
+            <!-- Pills de Clasificación -->
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1" id="contenedorPillsCategorias"></div>
+        </section>
+
+        <!-- Cuadrícula de Elementos -->
+        <section>
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                    Elementos Registrados (<span id="contadorFiltrados">0</span>)
+                </h2>
+                <span id="textoUltimaSync" class="text-xs text-slate-400">Respaldo local activo</span>
+            </div>
+
+            <div id="gridInventario" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+
+            <!-- Estado Vacío -->
+            <div id="estadoVacio" class="hidden bg-white rounded-2xl border border-dashed border-slate-300 p-10 text-center">
+                <div class="mx-auto w-12 h-12 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mb-3">
+                    <i data-lucide="package-search" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-base font-semibold text-slate-800">No se encontraron elementos</h3>
+                <p class="text-sm text-slate-500 mt-1 max-w-md mx-auto">Ajusta los filtros, sincroniza con Google Sheets o agrega un nuevo elemento.</p>
+                <button type="button" onclick="abrirModal()" class="mt-4 inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium px-4 py-2 rounded-xl transition cursor-pointer">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Registrar Nuevo Ítem
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Crear / Editar Elemento -->
+    <div id="modalElemento" class="fixed inset-0 z-50 hidden modal-backdrop items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl w-full max-w-xl shadow-2xl border border-slate-200 overflow-hidden my-auto">
+            <div class="px-5 py-4 bg-indigo-950 text-white flex items-center justify-between">
+                <h3 id="tituloModalElemento" class="text-base font-bold">Nuevo Elemento de Inventario</h3>
+                <button type="button" onclick="cerrarModal()" class="text-indigo-200 hover:text-white p-1 rounded-lg cursor-pointer">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="formElemento" onsubmit="guardarElemento(event)" class="p-5 space-y-3.5 max-h-[82vh] overflow-y-auto">
+                <input type="hidden" id="itemId" />
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Código QR / Interno *</label>
+                        <div class="flex gap-1.5">
+                            <input id="itemCodigoQR" type="text" required placeholder="Ej: EQP-004" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                            <button type="button" onclick="generarCodigoSugerido()" title="Generar código" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 cursor-pointer">
+                                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                            </button>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <button onclick="limpiarFiltrosReporte()" class="px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-xl border border-slate-200 transition">
-                            Limpiar Filtros
-                        </button>
-                        <button onclick="exportarReporteCSV()" class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-xl shadow-sm transition">
-                            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-                            <span>Exportar Reporte CSV</span>
-                        </button>
-                        <button onclick="imprimirReportePDF()" class="inline-flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-xl shadow-sm transition">
-                            <i data-lucide="printer" class="w-4 h-4"></i>
-                            <span>Imprimir / PDF</span>
-                        </button>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Cantidad *</label>
+                        <input id="itemCantidad" type="number" min="0" value="1" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                     </div>
                 </div>
 
-                <!-- Grid de 5 Filtros Simultáneos -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del Elemento *</label>
+                    <input id="itemNombre" type="text" required placeholder="Ej: Multímetro digital, Osciloscopio..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 uppercase mb-1">1. Clasificación</label>
-                        <select id="repFiltroClasif" onchange="renderizarReportes()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-indigo-500 outline-none">
-                            <option value="Todas">Todas (6 categorías)</option>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Clasificación</label>
+                        <select id="itemClasificacion" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <option value="Muebles">Muebles</option>
                             <option value="Equipos">Equipos</option>
                             <option value="Herramientas">Herramientas</option>
@@ -371,1647 +216,781 @@
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 uppercase mb-1">2. Área Laboratorio</label>
-                        <select id="repFiltroArea" onchange="renderizarReportes()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-indigo-500 outline-none">
-                            <option value="Todas">Todas las áreas</option>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Área / Laboratorio</label>
+                        <select id="itemArea" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <option value="Electrónica">Electrónica</option>
                             <option value="Física">Física</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 uppercase mb-1">3. Estado Físico</label>
-                        <select id="repFiltroEstado" onchange="renderizarReportes()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-indigo-500 outline-none">
-                            <option value="Todos">Todos los estados</option>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Estado</label>
+                        <select id="itemEstado" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <option value="Excelente">Excelente</option>
                             <option value="Bueno">Bueno</option>
+                            <option value="Regular">Regular</option>
                             <option value="Requiere Mantenimiento">Requiere Mantenimiento</option>
                             <option value="Desecho">Desecho</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 uppercase mb-1">4. Ubicación Física</label>
-                        <select id="repFiltroUbicacion" onchange="renderizarReportes()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-indigo-500 outline-none">
-                            <option value="Todas">Todas las ubicaciones</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 uppercase mb-1">5. Texto / Código QR</label>
-                        <input type="text" id="repFiltroTexto" oninput="renderizarReportes()" placeholder="Ej: EQP, Arduino..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                    </div>
-                </div>
-            </section>
-
-            <!-- Resumen Dinámico del Reporte Filtrado -->
-            <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <!-- Métricas Numéricas -->
-                <div class="lg:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
-                        <p class="text-xs font-medium text-slate-500 uppercase">Ítems Filtrados</p>
-                        <p id="repStatItems" class="text-2xl font-bold text-slate-900 mt-1">0</p>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Registros coincidentes</p>
-                    </div>
-
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
-                        <p class="text-xs font-medium text-slate-500 uppercase">Suma Unidades</p>
-                        <p id="repStatUnidades" class="text-2xl font-bold text-indigo-600 mt-1">0</p>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Existencias físicas totales</p>
-                    </div>
-
-                    <div class="col-span-2 sm:col-span-1 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
-                        <p class="text-xs font-medium text-slate-500 uppercase">Operativos vs. Alerta</p>
-                        <div class="flex items-baseline gap-2 mt-1">
-                            <span id="repStatOperativos" class="text-2xl font-bold text-emerald-600">0</span>
-                            <span class="text-xs text-slate-400">/</span>
-                            <span id="repStatAlerta" class="text-lg font-bold text-amber-600">0</span>
-                        </div>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Excelente+Bueno vs. Mant/Desecho</p>
-                    </div>
-                </div>
-
-                <!-- Desglose Visual por Clasificación (Barras de Proporción) -->
-                <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
-                    <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">Distribución por Clasificación (Unidades)</h3>
-                    <div id="repBarrasClasificacion" class="space-y-2.5">
-                        <!-- Barras generadas dinámicamente -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- Tabla de Vista Previa para Auditoría e Impresión -->
-            <section class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
-                <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between no-print">
-                    <h3 class="text-sm font-bold text-slate-800">Vista Previa del Reporte (<span id="repTablaCount">0</span> filas)</h3>
-                    <span class="text-xs text-slate-400">Listo para auditoría, CSV o impresión</span>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-600 uppercase tracking-wider">
-                                <th class="py-3 px-4">Código</th>
-                                <th class="py-3 px-4">Elemento</th>
-                                <th class="py-3 px-4">Clasificación</th>
-                                <th class="py-3 px-4">Área</th>
-                                <th class="py-3 px-4">Ubicación</th>
-                                <th class="py-3 px-4 text-center">Cant.</th>
-                                <th class="py-3 px-4">Estado</th>
-                                <th class="py-3 px-4">Observaciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="repTablaBody" class="divide-y divide-slate-100 text-sm">
-                            <!-- Filas generadas dinámicamente -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pie de firmas solo visible al imprimir -->
-                <div class="hidden print-only mt-12 pt-8 grid grid-cols-2 gap-12 text-center text-xs">
-                    <div>
-                        <div class="border-t border-slate-600 w-3/4 mx-auto pt-1 font-semibold">Docente Responsable de Laboratorio</div>
-                    </div>
-                    <div>
-                        <div class="border-t border-slate-600 w-3/4 mx-auto pt-1 font-semibold">Representante Grupo Grado 11°</div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-    </main>
-
-    <!-- ========================================================= -->
-    <!-- MODAL 1: FORMULARIO CRUD (INGRESAR / EDITAR ELEMENTO)     -->
-    <!-- ========================================================= -->
-    <div id="modalFormulario" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto no-print">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden my-auto border border-slate-200">
-            <div class="bg-slate-900 text-white px-5 py-4 flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                    <i data-lucide="clipboard-list" class="w-5 h-5 text-indigo-400"></i>
-                    <h3 id="modalTitulo" class="font-bold text-base sm:text-lg">Registrar Nuevo Elemento</h3>
-                </div>
-                <button onclick="cerrarModal()" class="text-slate-400 hover:text-white p-1 rounded-lg transition">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <form id="formInventario" onsubmit="guardarItem(event)" class="p-5 space-y-4 max-h-[82vh] overflow-y-auto">
-                <input type="hidden" id="itemId">
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Código QR / Serie *</label>
-                        <div class="flex gap-1.5">
-                            <input type="text" id="inputCodigoQR" required placeholder="Ej: EQP-001 o Serie #..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none">
-                            <button type="button" onclick="abrirEscanerQR('capturar')" title="Escanear código QR/barras con cámara" class="px-2.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1 transition shrink-0">
-                                <i data-lucide="scan-line" class="w-4 h-4"></i>
-                                <span class="hidden sm:inline">Cámara</span>
-                            </button>
-                            <button type="button" onclick="generarCodigoSugerido()" title="Autogenerar consecutivo" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-300 text-xs font-medium transition shrink-0">
-                                <i data-lucide="sparkles" class="w-4 h-4"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Área del Laboratorio *</label>
-                        <select id="inputArea" required class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none">
-                            <option value="Electrónica">Electrónica</option>
-                            <option value="Física">Física</option>
+                            <option value="Dado de Baja">Dado de Baja</option>
                         </select>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Nombre del Elemento *</label>
-                    <input type="text" id="inputNombre" required placeholder="Ej: Osciloscopio Digital 50MHz, Mesa antiestática..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none">
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Ubicación Física</label>
+                    <input id="itemUbicacion" type="text" placeholder="Ej: Gabinete gris, Estante 2..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Clasificación (6 Ítems) *</label>
-                        <select id="inputClasificacion" required onchange="generarCodigoSugerido(true)" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none">
-                            <option value="Muebles">Muebles (Sillas, mesas, gabinetes, repisas)</option>
-                            <option value="Equipos">Equipos (Osciloscopios, fuentes, carriles)</option>
-                            <option value="Herramientas">Herramientas (Cautines, pinzas, multímetros)</option>
-                            <option value="Elementos">Elementos (Tarjetas, protoboards, sensores)</option>
-                            <option value="Insumos">Insumos (Resistencias, estaño, cables)</option>
-                            <option value="Otros">Otros (Carteles, accesorios varios)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Estado Físico *</label>
-                        <select id="inputEstado" required class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none">
-                            <option value="Excelente">Excelente</option>
-                            <option value="Bueno">Bueno</option>
-                            <option value="Requiere Mantenimiento">Requiere Mantenimiento</option>
-                            <option value="Desecho">Desecho</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="sm:col-span-2">
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Ubicación Física *</label>
-                        <input type="text" id="inputUbicacion" required placeholder="Ej: Armario A - Cajón 3, Mesón Central" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Cantidad *</label>
-                        <div class="flex items-center">
-                            <button type="button" onclick="ajustarCantidadModal(-1)" class="px-3 py-2 bg-slate-200 hover:bg-slate-300 rounded-l-xl font-bold text-slate-700">-</button>
-                            <input type="number" id="inputCantidad" min="0" value="1" required class="w-full py-2 text-center bg-slate-50 border-y border-slate-300 text-sm font-semibold outline-none">
-                            <button type="button" onclick="ajustarCantidadModal(1)" class="px-3 py-2 bg-slate-200 hover:bg-slate-300 rounded-r-xl font-bold text-slate-700">+</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fotografía (Comprimida para compatibilidad con celdas de Google Sheets) -->
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Fotografía (Cámara o Galería)</label>
-                    <div class="flex items-center gap-3 p-3 bg-slate-50 border border-dashed border-slate-300 rounded-xl">
-                        <div id="previewFotoContainer" class="w-16 h-16 rounded-xl bg-slate-200 flex items-center justify-center overflow-hidden shrink-0 border border-slate-300">
-                            <i data-lucide="camera" class="w-6 h-6 text-slate-400"></i>
-                        </div>
-                        <div class="flex-1">
-                            <label for="inputFoto" class="cursor-pointer inline-flex items-center gap-1.5 bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-2 rounded-lg border border-slate-300 shadow-sm transition">
-                                <i data-lucide="camera" class="w-4 h-4 text-indigo-600"></i>
-                                <span>Tomar o Subir Foto</span>
-                            </label>
-                            <input type="file" id="inputFoto" accept="image/*" capture="environment" class="hidden" onchange="procesarFoto(event)">
-                            <button type="button" id="btnQuitarFoto" onclick="quitarFoto()" class="hidden ml-2 text-xs text-rose-600 hover:underline">Quitar</button>
-                            <p class="text-[11px] text-slate-500 mt-1">Se optimiza automáticamente para guardarse sin saturar Google Sheets.</p>
-                        </div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Foto (URL o imagen comprimida)</label>
+                    <div class="flex items-center gap-2">
+                        <input id="itemFoto" type="text" placeholder="Pega una URL de imagen o adjunta foto" class="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                        <label class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 text-xs font-medium cursor-pointer shrink-0">
+                            Foto
+                            <input type="file" accept="image/*" capture="environment" onchange="procesarFotoArchivo(event)" class="hidden" />
+                        </label>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Observaciones</label>
-                    <textarea id="inputObservaciones" rows="2" placeholder="Detalles técnicos, accesorios incluidos, daños..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none"></textarea>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Observaciones</label>
+                    <textarea id="itemObservaciones" rows="2" placeholder="Detalles técnicos, accesorios, estado..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                 </div>
 
                 <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
-                    <button type="button" onclick="cerrarModal()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl transition">Cancelar</button>
-                    <button type="submit" id="btnGuardarFormulario" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl shadow-sm transition">Guardar Registro</button>
+                    <button type="button" onclick="cerrarModal()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl cursor-pointer">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-5 py-2 text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-xs cursor-pointer">
+                        Guardar
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- ========================================================= -->
-    <!-- MODAL 2: CONEXIÓN GOOGLE SHEETS + CÓDIGO APPS SCRIPT      -->
-    <!-- ========================================================= -->
-    <div id="modalConexion" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto no-print">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden my-auto border border-slate-200">
-            <div class="bg-slate-900 text-white px-5 py-4 flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                    <i data-lucide="sheet" class="w-5 h-5 text-emerald-400"></i>
-                    <h3 class="font-bold text-base sm:text-lg">Conectar con Google Sheets (Tiempo Real)</h3>
-                </div>
-                <button onclick="cerrarModalConexion()" class="text-slate-400 hover:text-white p-1 rounded-lg transition">
+    <!-- Modal Ver QR -->
+    <div id="modalQR" class="fixed inset-0 z-50 hidden modal-backdrop items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-xs p-5 text-center shadow-2xl border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between">
+                <h3 id="qrTitulo" class="text-sm font-bold text-slate-800 truncate">Código QR</h3>
+                <button type="button" onclick="cerrarModalQR()" class="text-slate-400 hover:text-slate-700 cursor-pointer">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-
-            <div class="p-5 space-y-5 max-h-[84vh] overflow-y-auto">
-                <!-- Campo para pegar la URL del Web App -->
-                <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-100 space-y-3">
-                    <label class="block text-xs font-bold text-indigo-950 uppercase">URL de Aplicación Web (Google Apps Script)</label>
-                    <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="url" id="inputAppsScriptUrl" placeholder="https://script.google.com/macros/s/AKfycb.../exec" class="flex-1 px-3 py-2 bg-white border border-indigo-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                        <button onclick="guardarUrlConexion()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl shadow-sm transition shrink-0">
-                            Guardar y Conectar
-                        </button>
-                    </div>
-                    <div class="flex items-center justify-between text-xs text-slate-600">
-                        <span>Si dejas el campo vacío, la app trabajará en <strong>Modo Local</strong>.</span>
-                        <button type="button" onclick="desconectarSheet()" class="text-rose-600 hover:underline font-medium">Desconectar</button>
-                    </div>
-                </div>
-
-                <!-- Pasos de Configuración -->
-                <div class="space-y-2 text-xs sm:text-sm text-slate-600">
-                    <h4 class="font-bold text-slate-900">¿Cómo obtener esta URL en 2 minutos?</h4>
-                    <ol class="list-decimal list-inside space-y-1.5">
-                        <li>Abre tu hoja de cálculo en Google Drive y verifica que la pestaña se llame exactamente <code class="bg-slate-100 px-1.5 py-0.5 rounded font-semibold text-slate-800">Inventario</code> con las 10 columnas en la fila 1.</li>
-                        <li>En el menú superior haz clic en <strong>Extensiones &gt; Apps Script</strong>.</li>
-                        <li>Borra cualquier código existente, pega el script de abajo y guarda el proyecto.</li>
-                        <li>Haz clic en <strong>Implementar &gt; Nueva implementación</strong>, selecciona tipo <strong>Aplicación web</strong>, en <em>Quién tiene acceso</em> elige <strong>Cualquier persona</strong>, autoriza los permisos y copia la URL generada.</li>
-                    </ol>
-                </div>
-
-                <!-- Bloque de Código Google Apps Script Copiable -->
-                <div class="space-y-2">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-slate-700 uppercase">Código Google Apps Script (CRUD Completo)</span>
-                        <button onclick="copiarCodigoAppsScript()" class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">
-                            <i data-lucide="copy" class="w-3.5 h-3.5 text-emerald-400"></i>
-                            <span>Copiar Código</span>
-                        </button>
-                    </div>
-                    <textarea id="codigoAppsScriptText" readonly rows="10" class="w-full p-3 bg-slate-900 text-emerald-300 font-mono text-xs rounded-xl border border-slate-700 focus:outline-none">const SHEET_NAME = 'Inventario';
-
-function doGet(e) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
-  if (!sheet) return jsonResponse({ status: 'error', message: 'No existe la pestaña Inventario' });
-  
-  const data = sheet.getDataRange().getValues();
-  if (data.length <= 1) return jsonResponse({ status: 'success', data: [] });
-  
-  const headers = data[0];
-  const rows = data.slice(1).map(row => {
-    let obj = {};
-    headers.forEach((h, i) => obj[h] = row[i]);
-    return obj;
-  });
-  return jsonResponse({ status: 'success', data: rows });
-}
-
-function doPost(e) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
-  const payload = JSON.parse(e.postData.contents);
-  const action = payload.action;
-  const item = payload.item;
-  const data = sheet.getDataRange().getValues();
-
-  if (action === 'create') {
-    sheet.appendRow([
-      item.ID_Unico, item.Codigo_QR, item.Nombre_Elemento,
-      item.Clasificacion_Inventario, item.Area_Laboratorio,
-      item.Ubicacion_Fisica, item.Cantidad, item.Estado,
-      item.Foto || '', item.Observaciones || ''
-    ]);
-    return jsonResponse({ status: 'success', message: 'Creado' });
-  }
-
-  if (action === 'update') {
-    for (let i = 1; i < data.length; i++) {
-      if (String(data[i][0]) === String(item.ID_Unico)) {
-        sheet.getRange(i + 1, 1, 1, 10).setValues([[
-          item.ID_Unico, item.Codigo_QR, item.Nombre_Elemento,
-          item.Clasificacion_Inventario, item.Area_Laboratorio,
-          item.Ubicacion_Fisica, item.Cantidad, item.Estado,
-          item.Foto || '', item.Observaciones || ''
-        ]]);
-        return jsonResponse({ status: 'success', message: 'Actualizado' });
-      }
-    }
-  }
-
-  if (action === 'delete') {
-    for (let i = 1; i < data.length; i++) {
-      if (String(data[i][0]) === String(payload.ID_Unico)) {
-        sheet.deleteRow(i + 1);
-        return jsonResponse({ status: 'success', message: 'Eliminado' });
-      }
-    }
-  }
-
-  return jsonResponse({ status: 'error', message: 'Registro no encontrado' });
-}
-
-function jsonResponse(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj))
-    .setMimeType(ContentService.MimeType.JSON);
-}</textarea>
-                </div>
-            </div>
+            <div id="contenedorQR" class="flex justify-center py-2"></div>
+            <p id="qrSubtitulo" class="text-xs font-mono text-slate-600 bg-slate-100 py-1.5 px-2 rounded-lg break-all"></p>
+            <button type="button" onclick="cerrarModalQR()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl cursor-pointer">
+                Listo
+            </button>
         </div>
     </div>
 
-    <!-- Modal de Confirmación Personalizado -->
-    <div id="modalConfirmacion" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 no-print">
-        <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-5 border border-slate-200 text-center space-y-4">
-            <div class="mx-auto w-12 h-12 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center">
-                <i data-lucide="alert-circle" class="w-6 h-6"></i>
-            </div>
-            <div>
-                <h4 id="confirmTitulo" class="text-base font-bold text-slate-900">¿Confirmar acción?</h4>
-                <p id="confirmMensaje" class="text-sm text-slate-500 mt-1">Esta acción no se puede deshacer.</p>
-            </div>
-            <div class="flex items-center justify-center gap-2 pt-2">
-                <button onclick="cerrarConfirmacion()" class="flex-1 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition">Cancelar</button>
-                <button id="btnConfirmarAccion" class="flex-1 py-2 text-sm font-semibold text-white bg-rose-600 hover:bg-rose-500 rounded-xl transition">Confirmar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ========================================================= -->
-    <!-- MODAL 3: ESCÁNER ÓPTICO QR CON CÁMARA DEL CELULAR         -->
-    <!-- ========================================================= -->
-    <div id="modalEscanerQR" class="fixed inset-0 z-[60] hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 no-print">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
-            <div class="bg-slate-900 text-white px-5 py-3.5 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="scan-line" class="w-5 h-5 text-emerald-400"></i>
-                    <div>
-                        <h3 id="tituloModalEscaner" class="font-bold text-sm sm:text-base">Escáner QR de Laboratorio</h3>
-                        <p id="subtituloModalEscaner" class="text-[11px] text-slate-300">Apunta la cámara al QR de la caja o equipo</p>
-                    </div>
-                </div>
-                <button onclick="cerrarEscanerQR()" class="text-slate-400 hover:text-white p-1.5 rounded-lg transition">
+    <!-- Modal Escáner QR -->
+    <div id="modalEscaner" class="fixed inset-0 z-50 hidden modal-backdrop items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl border border-slate-200">
+            <div class="px-4 py-3 bg-slate-900 text-white flex items-center justify-between">
+                <h3 class="text-sm font-bold flex items-center gap-2">
+                    <i data-lucide="scan-line" class="w-4 h-4 text-emerald-400"></i>
+                    Escanear Código QR
+                </h3>
+                <button type="button" onclick="cerrarEscaner()" class="text-slate-300 hover:text-white cursor-pointer">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-
             <div class="p-4 space-y-3">
-                <!-- Visor de Cámara html5-qrcode -->
-                <div class="relative rounded-2xl overflow-hidden bg-slate-900 border-2 border-slate-200 min-h-[260px] flex items-center justify-center">
-                    <div id="readerQR" class="w-full"></div>
+                <div id="lectorQR" class="w-full rounded-xl overflow-hidden bg-slate-950 min-h-[240px]"></div>
+                <p id="estadoEscaner" class="text-xs text-slate-500 text-center">Apunta la cámara hacia el código QR del elemento.</p>
+                <button type="button" onclick="cerrarEscaner()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl cursor-pointer">
+                    Cerrar Escáner
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Conectar Google Sheets -->
+    <div id="modalSheet" class="fixed inset-0 z-50 hidden modal-backdrop items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden">
+            <div class="px-5 py-4 bg-indigo-950 text-white flex items-center justify-between">
+                <h3 class="text-base font-bold">Conectar con Google Sheets</h3>
+                <button type="button" onclick="cerrarModalSheet()" class="text-indigo-200 hover:text-white cursor-pointer">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-5 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">
+                        URL de implementación Web App (/exec) de Apps Script
+                    </label>
+                    <input id="inputUrlSheet" type="url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    <p class="text-[11px] text-slate-500 mt-1">
+                        Se guarda únicamente en este navegador y no queda expuesta en el código fuente de GitHub.
+                    </p>
                 </div>
 
-                <!-- Mensaje de estado / permisos -->
-                <div id="estadoCamaraQR" class="text-xs text-center text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-                    Iniciando cámara trasera... Permite el acceso si tu navegador lo solicita.
-                </div>
-
-                <!-- Ingreso manual alternativo por si la luz es baja -->
-                <div class="pt-2 border-t border-slate-100">
-                    <label class="block text-[11px] font-semibold text-slate-500 uppercase mb-1">¿Sin cámara disponible? Digita o pega el código:</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="inputCodigoManualQR" placeholder="Ej: EQP-001 o Serie..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-                        <button type="button" onclick="procesarCodigoLeido(document.getElementById('inputCodigoManualQR').value)" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded-xl transition">
-                            Procesar
+                <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="limpiarUrlSheet()" class="px-3 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 rounded-xl cursor-pointer">
+                        Desconectar
+                    </button>
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="cerrarModalSheet()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-xl cursor-pointer">
+                            Cancelar
+                        </button>
+                        <button type="button" onclick="guardarYConectarSheet()" class="px-4 py-2 text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl cursor-pointer">
+                            Guardar y Sincronizar
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- ========================================================= -->
-    <!-- MODAL 4: RESULTADO RÁPIDO DE ESCANEO QR (FICHA / NUEVO)   -->
-    <!-- ========================================================= -->
-    <div id="modalResultadoQR" class="fixed inset-0 z-[60] hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 no-print">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200">
-            <div class="bg-slate-900 text-white px-5 py-3.5 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="qr-code" class="w-5 h-5 text-sky-400"></i>
-                    <h3 class="font-bold text-sm sm:text-base">Lectura de Etiqueta QR</h3>
-                </div>
-                <button onclick="cerrarModalResultadoQR()" class="text-slate-400 hover:text-white p-1 rounded-lg transition">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div id="contenidoResultadoQR" class="p-5">
-                <!-- Contenido dinámico según si existe o es nuevo -->
-            </div>
-        </div>
-    </div>
-
-    <!-- ========================================================= -->
-    <!-- MODAL 5: GENERADOR / IMPRESIÓN DE ETIQUETA ADHESIVA QR    -->
-    <!-- ========================================================= -->
-    <div id="modalEtiquetaQR" class="fixed inset-0 z-[60] hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 no-print">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden border border-slate-200">
-            <div class="bg-slate-900 text-white px-5 py-3.5 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="tag" class="w-5 h-5 text-amber-400"></i>
-                    <h3 class="font-bold text-sm sm:text-base">Etiqueta QR Adhesiva</h3>
-                </div>
-                <button onclick="cerrarModalEtiquetaQR()" class="text-slate-400 hover:text-white p-1 rounded-lg transition">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <div class="p-5 space-y-4">
-                <!-- Vista previa de la etiqueta lista para imprimir/descargar -->
-                <div id="tarjetaEtiquetaImprimible" class="border-2 border-dashed border-slate-400 rounded-2xl p-4 bg-white text-center space-y-2.5 shadow-inner">
-                    <p class="text-[10px] font-extrabold uppercase tracking-wider text-slate-700 border-b border-slate-200 pb-1.5">
-                        I. E. Antonio Derka Santo Domingo
-                    </p>
-                    <div id="contenedorCanvasQR" class="flex justify-center py-1"></div>
-                    <div>
-                        <span id="etiquetaCodigoTexto" class="inline-block px-2.5 py-0.5 rounded bg-slate-900 text-white font-mono text-xs font-bold tracking-wider"></span>
-                        <h4 id="etiquetaNombreTexto" class="font-bold text-slate-900 text-sm mt-1 leading-tight"></h4>
-                        <p id="etiquetaUbicacionTexto" class="text-[11px] text-slate-500 mt-0.5"></p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2.5">
-                    <button type="button" onclick="descargarEtiquetaPNG()" class="inline-flex items-center justify-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold py-2.5 px-3 rounded-xl shadow-sm transition">
-                        <i data-lucide="download" class="w-4 h-4"></i>
-                        <span>Descargar PNG</span>
-                    </button>
-                    <button type="button" onclick="imprimirEtiquetaIndividual()" class="inline-flex items-center justify-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold py-2.5 px-3 rounded-xl shadow-sm transition">
-                        <i data-lucide="printer" class="w-4 h-4"></i>
-                        <span>Imprimir Etiqueta</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notificación Toast -->
-    <div id="toastNotificacion" class="fixed bottom-16 md:bottom-5 right-4 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2.5 text-sm font-medium no-print">
-        <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400 shrink-0"></i>
-        <span id="toastTexto">Operación realizada</span>
     </div>
 
     <script>
-        const STORAGE_KEY = 'labstock_inventario_v2';
-        const URL_SCRIPT_KEY = 'labstock_apps_script_url';
-        const LOGO_STORAGE_KEY = 'ie_antonio_derka_logo_v1';
+        const STORAGE_KEY = 'derka_inventario_v1';
+        const SHEET_URL_KEY = 'derka_sheet_url';
 
-        const CLASIFICACIONES = [
-            { nombre: 'Muebles', prefijo: 'MUE', icono: 'armchair', color: 'bg-amber-100 text-amber-800 border-amber-200', barColor: 'bg-amber-500' },
-            { nombre: 'Equipos', prefijo: 'EQP', icono: 'monitor-speaker', color: 'bg-indigo-100 text-indigo-800 border-indigo-200', barColor: 'bg-indigo-600' },
-            { nombre: 'Herramientas', prefijo: 'HER', icono: 'wrench', color: 'bg-sky-100 text-sky-800 border-sky-200', barColor: 'bg-sky-500' },
-            { nombre: 'Elementos', prefijo: 'ELE', icono: 'cpu', color: 'bg-purple-100 text-purple-800 border-purple-200', barColor: 'bg-purple-600' },
-            { nombre: 'Insumos', prefijo: 'INS', icono: 'package', color: 'bg-emerald-100 text-emerald-800 border-emerald-200', barColor: 'bg-emerald-500' },
-            { nombre: 'Otros', prefijo: 'OTR', icono: 'more-horizontal', color: 'bg-slate-100 text-slate-800 border-slate-200', barColor: 'bg-slate-500' }
-        ];
+        const CLASIFICACIONES_BASE = ['Muebles', 'Equipos', 'Herramientas', 'Elementos', 'Insumos', 'Otros'];
+        const AREAS_BASE = ['Electrónica', 'Física'];
+        const ESTADOS_BASE = ['Excelente', 'Bueno', 'Regular', 'Requiere Mantenimiento', 'Desecho', 'Dado de Baja'];
 
-        // 12 Elementos iniciales realistas (Física y Electrónica, cubriendo las 6 clasificaciones)
-        const DATOS_INICIALES = [
-            { ID_Unico: 'INV-001', Codigo_QR: 'MUE-001', Nombre_Elemento: 'Mesa de trabajo antiestática', Clasificacion_Inventario: 'Muebles', Area_Laboratorio: 'Electrónica', Ubicacion_Fisica: 'Laboratorio Principal', Cantidad: 7, Estado: 'Bueno', Foto: '', Observaciones: 'Superficie aislante en buen estado' },
-            { ID_Unico: 'INV-002', Codigo_QR: 'MUE-002', Nombre_Elemento: 'Silla / Taburete metálico alto', Clasificacion_Inventario: 'Muebles', Area_Laboratorio: 'Electrónica', Ubicacion_Fisica: 'Laboratorio Principal', Cantidad: 28, Estado: 'Excelente', Foto: '', Observaciones: '4 sillas asignadas por cada mesón' },
-            { ID_Unico: 'INV-003', Codigo_QR: 'MUE-003', Nombre_Elemento: 'Gabinete metálico de seguridad', Clasificacion_Inventario: 'Muebles', Area_Laboratorio: 'Física', Ubicacion_Fisica: 'Esquina Norte', Cantidad: 2, Estado: 'Excelente', Foto: '', Observaciones: 'Con cerradura y duplicado de llaves' },
-            { ID_Unico: 'INV-004', Codigo_QR: 'EQP-001', Nombre_Elemento: 'Osciloscopio Digital 50MHz', Clasificacion_Inventario: 'Equipos', Area_Laboratorio: 'Electrónica', Ubicacion_Fisica: 'Mesón Central', Cantidad: 4, Estado: 'Excelente', Foto: '', Observaciones: 'Incluye 2 sondas atenuadoras por equipo' },
-            { ID_Unico: 'INV-005', Codigo_QR: 'EQP-002', Nombre_Elemento: 'Fuente de poder DC Regulada 0-30V', Clasificacion_Inventario: 'Equipos', Area_Laboratorio: 'Electrónica', Ubicacion_Fisica: 'Armario de Medición 1', Cantidad: 6, Estado: 'Bueno', Foto: '', Observaciones: 'Operativas con cables banana' },
-            { ID_Unico: 'INV-006', Codigo_QR: 'EQP-003', Nombre_Elemento: 'Carril Dinámico con Carritos', Clasificacion_Inventario: 'Equipos', Area_Laboratorio: 'Física', Ubicacion_Fisica: 'Estante Largo Física', Cantidad: 3, Estado: 'Bueno', Foto: '', Observaciones: 'Incluye sensores de fotopuerta' },
-            { ID_Unico: 'INV-007', Codigo_QR: 'HER-001', Nombre_Elemento: 'Cautín tipo lápiz 60W', Clasificacion_Inventario: 'Herramientas', Area_Laboratorio: 'Electrónica', Ubicacion_Fisica: 'Armario Herramientas', Cantidad: 10, Estado: 'Bueno', Foto: '', Observaciones: '2 requieren cambio de punta' },
-            { ID_Unico: 'INV-008', Codigo_QR: 'HER-002', Nombre_Elemento: 'Multímetro digital de gancho', Clasificacion_Inventario: 'Herramientas', Area_Laboratorio: 'Electrónica', Ubicacion_Fisica: 'Armario de Medición 1', Cantidad: 8, Estado: 'Requiere Mantenimiento', Foto: '', Observaciones: 'Revisar fusible de 10A en dos unidades' },
-            { ID_Unico: 'INV-009', Codigo_QR: 'ELE-001', Nombre_Elemento: 'Tarjeta NodeMCU ESP32', Clasificacion_Inventario: 'Elementos', Area_Laboratorio: 'Electrónica', Ubicacion_Fisica: 'Vitrina de Seguridad', Cantidad: 15, Estado: 'Excelente', Foto: '', Observaciones: 'Módulos Wi-Fi/Bluetooth de 38 pines' },
-            { ID_Unico: 'INV-010', Codigo_QR: 'ELE-002', Nombre_Elemento: 'Juego de Lentes Ópticas y Prismas', Clasificacion_Inventario: 'Elementos', Area_Laboratorio: 'Física', Ubicacion_Fisica: 'Vitrina Óptica', Cantidad: 5, Estado: 'Desecho', Foto: '', Observaciones: 'Lentes convergentes rayados/astillados' },
-            { ID_Unico: 'INV-011', Codigo_QR: 'INS-001', Nombre_Elemento: 'Resistencias surtidas 1/4W', Clasificacion_Inventario: 'Insumos', Area_Laboratorio: 'Electrónica', Ubicacion_Fisica: 'Cajonera Componentes', Cantidad: 500, Estado: 'Excelente', Foto: '', Observaciones: 'Valores comerciales de 10Ω a 1MΩ' },
-            { ID_Unico: 'INV-012', Codigo_QR: 'OTR-001', Nombre_Elemento: 'Cartel de normas de seguridad', Clasificacion_Inventario: 'Otros', Area_Laboratorio: 'Física', Ubicacion_Fisica: 'Entrada Principal', Cantidad: 1, Estado: 'Bueno', Foto: '', Observaciones: 'Señalética reglamentaria en acrílico' }
+        const EJEMPLOS_INICIALES = [
+            {
+                ID_Unico: 'UUID-01',
+                Codigo_QR: 'MUE-01',
+                Nombre_Elemento: 'Mesa de trabajo',
+                Clasificacion_Inventario: 'Muebles',
+                Area_Laboratorio: 'Electrónica',
+                Ubicacion_Fisica: 'Aula',
+                Cantidad: 11,
+                Estado: 'Requiere Mantenimiento',
+                Foto: '',
+                Observaciones: ''
+            },
+            {
+                ID_Unico: 'UUID-02',
+                Codigo_QR: 'MUE-02',
+                Nombre_Elemento: 'Sillas metálicas',
+                Clasificacion_Inventario: 'Muebles',
+                Area_Laboratorio: 'Electrónica',
+                Ubicacion_Fisica: 'Aula',
+                Cantidad: 30,
+                Estado: 'Requiere Mantenimiento',
+                Foto: '',
+                Observaciones: ''
+            },
+            {
+                ID_Unico: 'EQP-001',
+                Codigo_QR: 'EQP-001',
+                Nombre_Elemento: 'Osciloscopio',
+                Clasificacion_Inventario: 'Equipos',
+                Area_Laboratorio: 'Electrónica',
+                Ubicacion_Fisica: 'Gabinete gris',
+                Cantidad: 1,
+                Estado: 'Excelente',
+                Foto: '',
+                Observaciones: ''
+            }
         ];
 
         let inventario = [];
         let categoriaActiva = 'Todas';
-        let fotoActualBase64 = '';
-        let appsScriptUrl = '';
         let html5QrScanner = null;
-        let modoEscanerActual = 'buscar'; // 'buscar' | 'capturar'
-        let itemEtiquetaActual = null;
 
-        window.onload = function() {
-            appsScriptUrl = localStorage.getItem(URL_SCRIPT_KEY) || '';
-            cargarLogoGuardado();
-            actualizarIndicadorConexion();
-            cargarInventarioLocal();
-            renderizarTodo();
-            lucide.createIcons();
-
-            if (appsScriptUrl) {
-                sincronizarDesdeSheets(true);
-            }
-        };
-
-        // ==========================================
-        // GESTIÓN DEL ESCUDO / LOGO INSTITUCIONAL
-        // ==========================================
-        function cargarLogoInstitucional(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const SIZE = 180;
-                    const scale = Math.min(SIZE / img.width, SIZE / img.height);
-                    canvas.width = img.width * scale;
-                    canvas.height = img.height * scale;
-
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                    const logoBase64 = canvas.toDataURL('image/png');
-                    try {
-                        localStorage.setItem(LOGO_STORAGE_KEY, logoBase64);
-                        aplicarLogoEnInterfaz(logoBase64);
-                        mostrarToast("Escudo institucional actualizado");
-                    } catch (err) {
-                        mostrarToast("No se pudo guardar el logo en memoria local");
-                    }
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function cargarLogoGuardado() {
-            const guardado = localStorage.getItem(LOGO_STORAGE_KEY);
-            if (guardado) {
-                aplicarLogoEnInterfaz(guardado);
-            }
-        }
-
-        function aplicarLogoEnInterfaz(base64) {
-            const svgDefault = document.getElementById('svgEscudoDefault');
-            const imgCustom = document.getElementById('imgEscudoCustom');
-            const btnRestaurar = document.getElementById('btnRestaurarEscudo');
-
-            svgDefault.classList.add('hidden');
-            imgCustom.src = base64;
-            imgCustom.classList.remove('hidden');
-            btnRestaurar.classList.remove('hidden');
-        }
-
-        function restaurarLogoDefault() {
-            localStorage.removeItem(LOGO_STORAGE_KEY);
-            document.getElementById('svgEscudoDefault').classList.remove('hidden');
-            document.getElementById('imgEscudoCustom').classList.add('hidden');
-            document.getElementById('imgEscudoCustom').src = '';
-            document.getElementById('btnRestaurarEscudo').classList.add('hidden');
-            mostrarToast("Escudo institucional por defecto restaurado");
-        }
-
-        // ==========================================
-        // NAVEGACIÓN ENTRE VISTAS (INVENTARIO / REPORTES)
-        // ==========================================
-        function cambiarVista(vista) {
-            const divInv = document.getElementById('vistaInventario');
-            const divRep = document.getElementById('vistaReportes');
-
-            const btnInvDesk = document.getElementById('tabBtnInventarioDesk');
-            const btnRepDesk = document.getElementById('tabBtnReportesDesk');
-            const btnInvMob = document.getElementById('tabBtnInventarioMob');
-            const btnRepMob = document.getElementById('tabBtnReportesMob');
-
-            if (vista === 'inventario') {
-                divInv.classList.remove('hidden');
-                divRep.classList.add('hidden');
-
-                btnInvDesk.className = 'flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-semibold bg-indigo-600 text-white shadow-sm transition';
-                btnRepDesk.className = 'flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white transition';
-
-                btnInvMob.className = 'flex flex-col items-center gap-1 text-indigo-600 font-semibold text-xs px-4 py-1';
-                btnRepMob.className = 'flex flex-col items-center gap-1 text-slate-500 font-medium text-xs px-4 py-1';
-                renderizarTodo();
-            } else {
-                divInv.classList.add('hidden');
-                divRep.classList.remove('hidden');
-
-                btnRepDesk.className = 'flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-semibold bg-indigo-600 text-white shadow-sm transition';
-                btnInvDesk.className = 'flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium text-slate-300 hover:text-white transition';
-
-                btnRepMob.className = 'flex flex-col items-center gap-1 text-indigo-600 font-semibold text-xs px-4 py-1';
-                btnInvMob.className = 'flex flex-col items-center gap-1 text-slate-500 font-medium text-xs px-4 py-1';
-                actualizarSelectorUbicacionesReporte();
-                renderizarReportes();
-            }
-            lucide.createIcons();
-        }
-
-        // ==========================================
-        // CONEXIÓN Y SINCRONIZACIÓN CON GOOGLE SHEETS
-        // ==========================================
-        function actualizarIndicadorConexion() {
-            const badge = document.getElementById('badgeEstadoConexion');
-            if (appsScriptUrl) {
-                badge.className = 'cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition hover:bg-emerald-500/30';
-                badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Conectado a Sheets`;
-            } else {
-                badge.className = 'cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 transition hover:bg-amber-500/30';
-                badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Modo Local`;
-            }
-        }
-
-        function abrirModalConexion() {
-            document.getElementById('inputAppsScriptUrl').value = appsScriptUrl;
-            document.getElementById('modalConexion').classList.remove('hidden');
-            lucide.createIcons();
-        }
-
-        function cerrarModalConexion() {
-            document.getElementById('modalConexion').classList.add('hidden');
-        }
-
-        function guardarUrlConexion() {
-            const url = document.getElementById('inputAppsScriptUrl').value.trim();
-            appsScriptUrl = url;
-            localStorage.setItem(URL_SCRIPT_KEY, appsScriptUrl);
-            actualizarIndicadorConexion();
-            cerrarModalConexion();
-
-            if (appsScriptUrl) {
-                sincronizarDesdeSheets();
-            } else {
-                mostrarToast("Guardado en Modo Local");
-            }
-        }
-
-        function desconectarSheet() {
-            appsScriptUrl = '';
-            document.getElementById('inputAppsScriptUrl').value = '';
-            localStorage.removeItem(URL_SCRIPT_KEY);
-            actualizarIndicadorConexion();
-            mostrarToast("Desconectado de Google Sheets (Modo Local)");
-        }
-
-        function copiarCodigoAppsScript() {
-            const textarea = document.getElementById('codigoAppsScriptText');
-            textarea.select();
-            textarea.setSelectionRange(0, 99999);
-            document.execCommand('copy');
-            mostrarToast("Código de Google Apps Script copiado al portapapeles");
-        }
-
-        async function sincronizarDesdeSheets(silencioso = false) {
-            if (!appsScriptUrl) {
-                if (!silencioso) abrirModalConexion();
-                return;
-            }
-
-            const icono = document.getElementById('iconoSync');
-            icono.classList.add('animate-spin');
-
+        function refrescarIconos() {
             try {
-                const response = await fetch(appsScriptUrl);
-                const result = await response.json();
-
-                const filas = result.items || result.data;
-		if (result.status === 'success' && Array.isArray(filas)) {
-    			inventario = filas.map(row => ({
-                        ID_Unico: String(row.ID_Unico || `INV-${Date.now()}`),
-                        Codigo_QR: String(row.Codigo_QR || ''),
-                        Nombre_Elemento: String(row.Nombre_Elemento || ''),
-                        Clasificacion_Inventario: CLASIFICACIONES.some(c => c.nombre === row.Clasificacion_Inventario) ? row.Clasificacion_Inventario : 'Otros',
-                        Area_Laboratorio: (row.Area_Laboratorio === 'Física' || row.Area_Laboratorio === 'Electrónica') ? row.Area_Laboratorio : 'Electrónica',
-                        Ubicacion_Fisica: String(row.Ubicacion_Fisica || ''),
-                        Cantidad: parseInt(row.Cantidad) || 0,
-                        Estado: ['Excelente', 'Bueno', 'Requiere Mantenimiento', 'Desecho'].includes(row.Estado) ? row.Estado : 'Bueno',
-                        Foto: String(row.Foto || ''),
-                        Observaciones: String(row.Observaciones || '')
-                    }));
-                    guardarInventarioLocal();
-                    renderizarTodo();
-                    if (!document.getElementById('vistaReportes').classList.contains('hidden')) {
-                        actualizarSelectorUbicacionesReporte();
-                        renderizarReportes();
-                    }
-                    const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    document.getElementById('textoUltimaSync').textContent = `Sincronizado con Google Sheets (${hora})`;
-                    if (!silencioso) mostrarToast(`Sincronizado: ${inventario.length} elementos cargados`);
-                } else {
-                    mostrarToast("Error leyendo datos de Google Sheets");
+                if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons();
                 }
-            } catch (error) {
-                console.error("Error de sincronización:", error);
-                mostrarToast("No se pudo conectar con la URL de Google Sheets");
-            } finally {
-                icono.classList.remove('animate-spin');
+            } catch (e) {
+                console.warn('Error cargando iconos:', e);
             }
         }
 
-        async function enviarOperacionSheet(payload) {
-            if (!appsScriptUrl) return;
-            try {
-                await fetch(appsScriptUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
-                });
-                const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                document.getElementById('textoUltimaSync').textContent = `Enviado a Google Sheets (${hora})`;
-            } catch (err) {
-                console.error("Error enviando a Sheets:", err);
-                mostrarToast("Guardado localmente (pendiente de conexión)");
-            }
-        }
-
-        // ==========================================
-        // ALMACENAMIENTO LOCAL Y RENDERIZADO INVENTARIO
-        // ==========================================
-        function cargarInventarioLocal() {
+        function cargarDatosLocales() {
             try {
                 const guardado = localStorage.getItem(STORAGE_KEY);
                 if (guardado) {
-                    inventario = JSON.parse(guardado);
-                } else {
-                    inventario = [...DATOS_INICIALES];
-                    guardarInventarioLocal();
+                    const parsed = JSON.parse(guardado);
+                    if (Array.isArray(parsed)) {
+                        inventario = parsed;
+                        return;
+                    }
                 }
             } catch (e) {
-                inventario = [...DATOS_INICIALES];
+                console.warn('Error leyendo localStorage:', e);
             }
+            inventario = [...EJEMPLOS_INICIALES];
+            guardarDatosLocales();
         }
 
-        function guardarInventarioLocal() {
+        function guardarDatosLocales() {
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(inventario));
             } catch (e) {
-                mostrarToast("Memoria local llena: intenta usar fotos más ligeras");
+                console.warn('Error guardando en localStorage:', e);
             }
         }
 
-        function renderizarTodo() {
-            actualizarEstadisticas();
-            renderizarPillsCategorias();
-            renderizarInventario();
+        function obtenerUrlSheet() {
+            try {
+                return (localStorage.getItem(SHEET_URL_KEY) || '').trim();
+            } catch (e) {
+                return '';
+            }
         }
 
-        function actualizarEstadisticas() {
-            const totalRegistros = inventario.length;
-            const totalUnidades = inventario.reduce((acc, item) => acc + (parseInt(item.Cantidad) || 0), 0);
-            const mantenimiento = inventario.filter(i => i.Estado === 'Requiere Mantenimiento').length;
-            const desecho = inventario.filter(i => i.Estado === 'Desecho').length;
+        function actualizarIndicadorSheet() {
+            const url = obtenerUrlSheet();
+            const dot = document.getElementById('dotSheet');
+            const label = document.getElementById('labelSheet');
+            const estadoTexto = document.getElementById('estadoSyncTexto');
 
-            document.getElementById('statTotalRegistros').textContent = totalRegistros;
-            document.getElementById('statTotalUnidades').textContent = totalUnidades;
-            document.getElementById('statMantenimiento').textContent = mantenimiento;
-            document.getElementById('statDesecho').textContent = desecho;
+            if (url) {
+                dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+                if (label) label.textContent = 'Conectado';
+                estadoTexto.textContent = 'Vinculado a Google Sheets';
+            } else {
+                dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+                if (label) label.textContent = 'Sheet';
+                estadoTexto.textContent = 'Sin URL vinculada (modo local)';
+            }
         }
 
-        function renderizarPillsCategorias() {
+        function actualizarOpcionesDinamicas(data = {}) {
+            const areasDesdeItems = inventario.map(i => String(i.Area_Laboratorio || '').trim()).filter(Boolean);
+            const clasifDesdeItems = inventario.map(i => String(i.Clasificacion_Inventario || '').trim()).filter(Boolean);
+            const estadosDesdeItems = inventario.map(i => String(i.Estado || '').trim()).filter(Boolean);
+
+            const areasServidor = Array.isArray(data.areas) ? data.areas.map(v => String(v || '').trim()).filter(Boolean) : [];
+            const clasifServidor = Array.isArray(data.clasificaciones) ? data.clasificaciones.map(v => String(v || '').trim()).filter(Boolean) : [];
+            const estadosServidor = Array.isArray(data.estados) ? data.estados.map(v => String(v || '').trim()).filter(Boolean) : [];
+
+            const todasAreas = Array.from(new Set([...AREAS_BASE, ...areasServidor, ...areasDesdeItems]));
+            const todasClasif = Array.from(new Set([...CLASIFICACIONES_BASE, ...clasifServidor, ...clasifDesdeItems]));
+            const todosEstados = Array.from(new Set([...ESTADOS_BASE, ...estadosServidor, ...estadosDesdeItems]));
+
+            // Filtro Área
+            const filtroArea = document.getElementById('filtroArea');
+            if (filtroArea) {
+                const prev = filtroArea.value;
+                filtroArea.innerHTML = '<option value="Todas">Área: Todas</option>' +
+                    todasAreas.map(a => `<option value="${escaparHTML(a)}">${escaparHTML(a)}</option>`).join('');
+                filtroArea.value = todasAreas.includes(prev) ? prev : 'Todas';
+            }
+
+            // Select Área en modal
+            const itemArea = document.getElementById('itemArea');
+            if (itemArea) {
+                const prev = itemArea.value;
+                itemArea.innerHTML = todasAreas.map(a => `<option value="${escaparHTML(a)}">${escaparHTML(a)}</option>`).join('');
+                if (todasAreas.includes(prev)) itemArea.value = prev;
+            }
+
+            // Filtro Estado
+            const filtroEstado = document.getElementById('filtroEstado');
+            if (filtroEstado) {
+                const prev = filtroEstado.value;
+                filtroEstado.innerHTML = '<option value="Todos">Estado: Todos</option>' +
+                    todosEstados.map(e => `<option value="${escaparHTML(e)}">${escaparHTML(e)}</option>`).join('');
+                filtroEstado.value = todosEstados.includes(prev) ? prev : 'Todos';
+            }
+
+            // Select Estado en modal
+            const itemEstado = document.getElementById('itemEstado');
+            if (itemEstado) {
+                const prev = itemEstado.value;
+                itemEstado.innerHTML = todosEstados.map(e => `<option value="${escaparHTML(e)}">${escaparHTML(e)}</option>`).join('');
+                if (todosEstados.includes(prev)) itemEstado.value = prev;
+            }
+
+            // Select Clasificación en modal
+            const itemClasif = document.getElementById('itemClasificacion');
+            if (itemClasif) {
+                const prev = itemClasif.value;
+                itemClasif.innerHTML = todasClasif.map(c => `<option value="${escaparHTML(c)}">${escaparHTML(c)}</option>`).join('');
+                if (todasClasif.includes(prev)) itemClasif.value = prev;
+            }
+
+            renderizarPillsClasificaciones(todasClasif);
+        }
+
+        function renderizarPillsClasificaciones(categorias = CLASIFICACIONES_BASE) {
             const contenedor = document.getElementById('contenedorPillsCategorias');
-            const totalGeneral = inventario.length;
+            if (!contenedor) return;
 
-            let html = `
-                <button onclick="seleccionarCategoria('Todas')" class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition flex items-center gap-1.5 ${categoriaActiva === 'Todas' ? 'bg-slate-900 text-white border-slate-900 shadow-sm' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'}">
-                    <span>Todas</span>
-                    <span class="px-1.5 py-0.5 rounded-md text-[10px] ${categoriaActiva === 'Todas' ? 'bg-slate-700 text-white' : 'bg-slate-200 text-slate-700'}">${totalGeneral}</span>
-                </button>
-            `;
+            const lista = ['Todas', ...categorias];
+            if (!lista.includes(categoriaActiva)) categoriaActiva = 'Todas';
 
-            CLASIFICACIONES.forEach(cat => {
-                const count = inventario.filter(i => i.Clasificacion_Inventario === cat.nombre).length;
-                const activa = categoriaActiva === cat.nombre;
-                html += `
-                    <button onclick="seleccionarCategoria('${cat.nombre}')" class="shrink-0 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition flex items-center gap-1.5 ${activa ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}">
-                        <i data-lucide="${cat.icono}" class="w-3.5 h-3.5"></i>
-                        <span>${cat.nombre}</span>
-                        <span class="px-1.5 py-0.5 rounded-md text-[10px] ${activa ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-600'}">${count}</span>
+            contenedor.innerHTML = lista.map(cat => {
+                const activa = cat === categoriaActiva;
+                const clases = activa
+                    ? 'bg-indigo-600 text-white border-indigo-600'
+                    : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200/70';
+                return `
+                    <button type="button" onclick="seleccionarCategoria('${escaparAttr(cat)}')" class="px-3 py-1.5 rounded-full text-xs font-semibold border whitespace-nowrap transition cursor-pointer ${clases}">
+                        ${escaparHTML(cat === 'Todas' ? 'Todas las clasificaciones' : cat)}
                     </button>
                 `;
-            });
-
-            contenedor.innerHTML = html;
-            lucide.createIcons();
+            }).join('');
         }
 
         function seleccionarCategoria(cat) {
             categoriaActiva = cat;
-            renderizarTodo();
+            renderizarPillsClasificaciones(
+                Array.from(new Set([
+                    ...CLASIFICACIONES_BASE,
+                    ...inventario.map(i => String(i.Clasificacion_Inventario || '').trim()).filter(Boolean)
+                ]))
+            );
+            renderizarInventario();
+        }
+
+        function badgeEstado(estado) {
+            const e = String(estado || '').toLowerCase();
+            if (e.includes('excelente') || e.includes('bueno')) {
+                return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+            }
+            if (e.includes('mantenimiento') || e.includes('regular')) {
+                return 'bg-amber-100 text-amber-800 border-amber-200';
+            }
+            return 'bg-rose-100 text-rose-800 border-rose-200';
         }
 
         function renderizarInventario() {
-            const textoBusqueda = document.getElementById('buscadorInput').value.toLowerCase().trim();
-            const areaFiltro = document.getElementById('filtroArea').value;
-            const estadoFiltro = document.getElementById('filtroEstado').value;
+            const texto = (document.getElementById('busquedaTexto')?.value || '').trim().toLowerCase();
+            const areaSel = document.getElementById('filtroArea')?.value || 'Todas';
+            const estadoSel = document.getElementById('filtroEstado')?.value || 'Todos';
 
             const filtrados = inventario.filter(item => {
-                const coincideCategoria = categoriaActiva === 'Todas' || item.Clasificacion_Inventario === categoriaActiva;
-                const coincideArea = areaFiltro === 'Todas' || item.Area_Laboratorio === areaFiltro;
-                const coincideEstado = estadoFiltro === 'Todos' || item.Estado === estadoFiltro;
-                const coincideTexto = !textoBusqueda ||
-                    item.Nombre_Elemento.toLowerCase().includes(textoBusqueda) ||
-                    item.Codigo_QR.toLowerCase().includes(textoBusqueda) ||
-                    item.Ubicacion_Fisica.toLowerCase().includes(textoBusqueda) ||
-                    (item.Observaciones && item.Observaciones.toLowerCase().includes(textoBusqueda));
+                const coincideCat = categoriaActiva === 'Todas' || String(item.Clasificacion_Inventario || '') === categoriaActiva;
+                const coincideArea = areaSel === 'Todas' || String(item.Area_Laboratorio || '') === areaSel;
+                const coincideEstado = estadoSel === 'Todos' || String(item.Estado || '') === estadoSel;
 
-                return coincideCategoria && coincideArea && coincideEstado && coincideTexto;
+                const hayTexto = !texto || [
+                    item.ID_Unico,
+                    item.Codigo_QR,
+                    item.Nombre_Elemento,
+                    item.Clasificacion_Inventario,
+                    item.Area_Laboratorio,
+                    item.Ubicacion_Fisica,
+                    item.Observaciones
+                ].some(v => String(v || '').toLowerCase().includes(texto));
+
+                return coincideCat && coincideArea && coincideEstado && hayTexto;
             });
 
+            // Estadísticas generales
+            const totalUnidades = inventario.reduce((acc, i) => acc + (Number(i.Cantidad) || 0), 0);
+            const totalBuenos = inventario.filter(i => ['excelente', 'bueno'].includes(String(i.Estado || '').toLowerCase())).length;
+            const totalMant = inventario.filter(i => String(i.Estado || '').toLowerCase().includes('mantenimiento')).length;
+
+            document.getElementById('statReferencias').textContent = inventario.length;
+            document.getElementById('statUnidades').textContent = totalUnidades;
+            document.getElementById('statBuenos').textContent = totalBuenos;
+            document.getElementById('statMantenimiento').textContent = totalMant;
             document.getElementById('contadorFiltrados').textContent = filtrados.length;
+
             const grid = document.getElementById('gridInventario');
             const vacio = document.getElementById('estadoVacio');
 
             if (filtrados.length === 0) {
                 grid.innerHTML = '';
                 vacio.classList.remove('hidden');
+                refrescarIconos();
                 return;
             }
 
             vacio.classList.add('hidden');
-            grid.innerHTML = filtrados.map(item => crearTarjetaHTML(item)).join('');
-            lucide.createIcons();
-        }
+            grid.innerHTML = filtrados.map(item => {
+                const idEsc = escaparAttr(item.ID_Unico || '');
+                const qrEsc = escaparAttr(item.Codigo_QR || '');
+                const nombreEsc = escaparHTML(item.Nombre_Elemento || 'Sin nombre');
+                const fotoValida = item.Foto && (String(item.Foto).startsWith('http') || String(item.Foto).startsWith('data:image'));
 
-        function crearTarjetaHTML(item) {
-            const catObj = CLASIFICACIONES.find(c => c.nombre === item.Clasificacion_Inventario) || CLASIFICACIONES[5];
+                return `
+                    <article class="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-4 flex flex-col justify-between gap-3 hover:border-indigo-300 transition">
+                        <div class="space-y-2.5">
+                            <div class="flex items-start justify-between gap-2">
+                                <div class="min-w-0">
+                                    <div class="flex items-center gap-1.5 flex-wrap">
+                                        <span class="text-[11px] font-mono font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 px-2 py-0.5 rounded-md">
+                                            ${escaparHTML(item.Codigo_QR || 'SIN-QR')}
+                                        </span>
+                                        <span class="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">
+                                            ${escaparHTML(item.Area_Laboratorio || 'General')}
+                                        </span>
+                                    </div>
+                                    <h3 class="text-base font-bold text-slate-800 mt-1.5 leading-snug">${nombreEsc}</h3>
+                                </div>
 
-            let badgeEstado = 'bg-emerald-50 text-emerald-700 border-emerald-200';
-            if (item.Estado === 'Bueno') badgeEstado = 'bg-sky-50 text-sky-700 border-sky-200';
-            if (item.Estado === 'Requiere Mantenimiento') badgeEstado = 'bg-amber-50 text-amber-700 border-amber-200';
-            if (item.Estado === 'Desecho') badgeEstado = 'bg-rose-50 text-rose-700 border-rose-200';
-
-            const badgeArea = item.Area_Laboratorio === 'Electrónica'
-                ? 'bg-indigo-50 text-indigo-700'
-                : 'bg-teal-50 text-teal-700';
-
-            const imagenHTML = item.Foto
-                ? `<img src="${item.Foto}" alt="${item.Nombre_Elemento}" class="w-16 h-16 rounded-xl object-cover border border-slate-200 shrink-0">`
-                : `<div class="w-16 h-16 rounded-xl bg-slate-100 border border-slate-200 flex flex-col items-center justify-center text-slate-400 shrink-0">
-                        <i data-lucide="${catObj.icono}" class="w-6 h-6"></i>
-                   </div>`;
-
-            return `
-                <article class="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm card-hover flex flex-col justify-between gap-3">
-                    <div>
-                        <div class="flex items-center justify-between gap-2 mb-3">
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-slate-800 text-white tracking-wide">${item.Codigo_QR}</span>
-                                <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold border ${catObj.color}">${item.Clasificacion_Inventario}</span>
-                                <span class="px-2 py-0.5 rounded-md text-[11px] font-medium ${badgeArea}">${item.Area_Laboratorio}</span>
+                                <span class="text-xs font-semibold px-2.5 py-1 rounded-full border shrink-0 ${badgeEstado(item.Estado)}">
+                                    ${escaparHTML(item.Estado || 'Bueno')}
+                                </span>
                             </div>
 
-                            <div class="flex items-center gap-1 shrink-0">
-                                <button onclick="abrirModalEtiquetaQR('${item.ID_Unico}')" title="Ver / Imprimir Etiqueta QR" class="p-1.5 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition">
-                                    <i data-lucide="qr-code" class="w-4 h-4"></i>
+                            ${fotoValida ? `
+                                <img src="${escaparAttr(item.Foto)}" alt="${nombreEsc}" class="w-full h-36 object-cover rounded-xl border border-slate-100 bg-slate-50" onerror="this.style.display='none'" />
+                            ` : ''}
+
+                            <div class="grid grid-cols-2 gap-2 text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                                <div><span class="text-slate-400">Clasificación:</span> <strong class="text-slate-700">${escaparHTML(item.Clasificacion_Inventario || '-')}</strong></div>
+                                <div><span class="text-slate-400">Cantidad:</span> <strong class="text-indigo-700">${Number(item.Cantidad) || 0}</strong></div>
+                                <div class="col-span-2 truncate"><span class="text-slate-400">Ubicación:</span> <span class="text-slate-700">${escaparHTML(item.Ubicacion_Fisica || 'No especificada')}</span></div>
+                            </div>
+
+                            ${item.Observaciones ? `<p class="text-xs text-slate-500 line-clamp-2">${escaparHTML(item.Observaciones)}</p>` : ''}
+                        </div>
+
+                        <div class="flex items-center justify-between pt-2 border-t border-slate-100 gap-2">
+                            <button type="button" onclick="verQR('${idEsc}')" class="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 px-2.5 py-1.5 rounded-lg transition cursor-pointer">
+                                <i data-lucide="qr-code" class="w-4 h-4"></i>
+                                <span>QR</span>
+                            </button>
+
+                            <div class="flex items-center gap-1">
+                                <button type="button" onclick="editarElemento('${idEsc}')" class="inline-flex items-center gap-1 text-xs font-medium text-slate-700 hover:bg-slate-100 px-2.5 py-1.5 rounded-lg transition cursor-pointer">
+                                    <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                                    <span>Editar</span>
                                 </button>
-                                <button onclick="editarItem('${item.ID_Unico}')" title="Editar ítem" class="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition">
-                                    <i data-lucide="pencil" class="w-4 h-4"></i>
-                                </button>
-                                <button onclick="confirmarEliminar('${item.ID_Unico}')" title="Eliminar ítem" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition">
-                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                <button type="button" onclick="borrarElemento('${idEsc}', '${qrEsc}')" class="inline-flex items-center gap-1 text-xs font-medium text-rose-600 hover:bg-rose-50 px-2.5 py-1.5 rounded-lg transition cursor-pointer">
+                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                 </button>
                             </div>
                         </div>
+                    </article>
+                `;
+            }).join('');
 
-                        <div class="flex items-start gap-3">
-                            ${imagenHTML}
-                            <div class="min-w-0 flex-1">
-                                <h3 class="font-bold text-slate-900 text-base leading-snug break-words">${item.Nombre_Elemento}</h3>
-                                <p class="text-xs text-slate-500 mt-1 flex items-center gap-1">
-                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                                    <span class="truncate">${item.Ubicacion_Fisica}</span>
-                                </p>
-                                ${item.Observaciones ? `<p class="text-xs text-slate-500 mt-1.5 line-clamp-2 italic">"${item.Observaciones}"</p>` : ''}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-                        <span class="px-2.5 py-1 rounded-lg text-xs font-semibold border ${badgeEstado}">
-                            ${item.Estado}
-                        </span>
-
-                        <div class="flex items-center gap-1.5 bg-slate-50 p-1 rounded-xl border border-slate-200">
-                            <button onclick="cambiarCantidadRapida('${item.ID_Unico}', -1)" class="w-7 h-7 flex items-center justify-center rounded-lg bg-white hover:bg-slate-200 text-slate-700 font-bold border border-slate-200 transition">-</button>
-                            <span class="px-2 text-sm font-bold text-slate-900 min-w-[2rem] text-center">${item.Cantidad}</span>
-                            <button onclick="cambiarCantidadRapida('${item.ID_Unico}', 1)" class="w-7 h-7 flex items-center justify-center rounded-lg bg-white hover:bg-slate-200 text-slate-700 font-bold border border-slate-200 transition">+</button>
-                        </div>
-                    </div>
-                </article>
-            `;
+            refrescarIconos();
         }
 
-        // ==========================================
-        // OPERACIONES CRUD (CREAR, EDITAR, ELIMINAR)
-        // ==========================================
-        async function cambiarCantidadRapida(id, delta) {
-            const idx = inventario.findIndex(i => i.ID_Unico === id);
-            if (idx !== -1) {
-                const nuevaCantidad = Math.max(0, (parseInt(inventario[idx].Cantidad) || 0) + delta);
-                inventario[idx].Cantidad = nuevaCantidad;
-                guardarInventarioLocal();
-                renderizarTodo();
-                await enviarOperacionSheet({ action: 'update', item: inventario[idx] });
-            }
-        }
+        function abrirModal(item = null) {
+            actualizarOpcionesDinamicas();
+            const modal = document.getElementById('modalElemento');
+            document.getElementById('formElemento').reset();
 
-        function abrirModal(itemEditar = null) {
-            const modal = document.getElementById('modalFormulario');
-            const form = document.getElementById('formInventario');
-            form.reset();
-            fotoActualBase64 = '';
-
-            if (itemEditar) {
-                document.getElementById('modalTitulo').textContent = 'Editar Elemento';
-                document.getElementById('itemId').value = itemEditar.ID_Unico;
-                document.getElementById('inputCodigoQR').value = itemEditar.Codigo_QR;
-                document.getElementById('inputArea').value = itemEditar.Area_Laboratorio;
-                document.getElementById('inputNombre').value = itemEditar.Nombre_Elemento;
-                document.getElementById('inputClasificacion').value = itemEditar.Clasificacion_Inventario;
-                document.getElementById('inputEstado').value = itemEditar.Estado;
-                document.getElementById('inputUbicacion').value = itemEditar.Ubicacion_Fisica;
-                document.getElementById('inputCantidad').value = itemEditar.Cantidad;
-                document.getElementById('inputObservaciones').value = itemEditar.Observaciones || '';
-
-                if (itemEditar.Foto) {
-                    fotoActualBase64 = itemEditar.Foto;
-                    mostrarPreviewFoto(itemEditar.Foto);
-                } else {
-                    limpiarPreviewFoto();
-                }
+            if (item) {
+                document.getElementById('tituloModalElemento').textContent = 'Editar Elemento';
+                document.getElementById('itemId').value = item.ID_Unico || '';
+                document.getElementById('itemCodigoQR').value = item.Codigo_QR || '';
+                document.getElementById('itemNombre').value = item.Nombre_Elemento || '';
+                document.getElementById('itemClasificacion').value = item.Clasificacion_Inventario || 'Otros';
+                document.getElementById('itemArea').value = item.Area_Laboratorio || 'Electrónica';
+                document.getElementById('itemCantidad').value = Number(item.Cantidad) || 0;
+                document.getElementById('itemEstado').value = item.Estado || 'Bueno';
+                document.getElementById('itemUbicacion').value = item.Ubicacion_Fisica || '';
+                document.getElementById('itemFoto').value = item.Foto || '';
+                document.getElementById('itemObservaciones').value = item.Observaciones || '';
             } else {
-                document.getElementById('modalTitulo').textContent = 'Registrar Nuevo Elemento';
+                document.getElementById('tituloModalElemento').textContent = 'Nuevo Elemento de Inventario';
                 document.getElementById('itemId').value = '';
-                document.getElementById('inputCantidad').value = 1;
-                limpiarPreviewFoto();
-                generarCodigoSugerido();
+                document.getElementById('itemCantidad').value = 1;
             }
 
             modal.classList.remove('hidden');
-            lucide.createIcons();
+            modal.classList.add('flex');
+            refrescarIconos();
         }
 
         function cerrarModal() {
-            document.getElementById('modalFormulario').classList.add('hidden');
+            const modal = document.getElementById('modalElemento');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
-        function editarItem(id) {
-            const item = inventario.find(i => i.ID_Unico === id);
-            if (item) abrirModal(item);
+        function generarCodigoSugerido() {
+            const area = (document.getElementById('itemArea').value || 'LAB').substring(0, 3).toUpperCase().replace(/[^A-Z]/g, 'L');
+            const num = String(inventario.length + 1).padStart(3, '0');
+            document.getElementById('itemCodigoQR').value = `${area}-${num}`;
         }
 
-        function ajustarCantidadModal(delta) {
-            const input = document.getElementById('inputCantidad');
-            input.value = Math.max(0, (parseInt(input.value) || 0) + delta);
-        }
+        function procesarFotoArchivo(event) {
+            const archivo = event.target.files?.[0];
+            if (!archivo) return;
 
-        function generarCodigoSugerido(soloSiEsNuevo = false) {
-            if (soloSiEsNuevo && document.getElementById('itemId').value !== '') return;
-            const clasif = document.getElementById('inputClasificacion').value;
-            const catObj = CLASIFICACIONES.find(c => c.nombre === clasif) || CLASIFICACIONES[5];
-            const existentes = inventario.filter(i => i.Clasificacion_Inventario === clasif).length + 1;
-            const numeroFormateado = String(existentes).padStart(3, '0');
-            document.getElementById('inputCodigoQR').value = `${catObj.prefijo}-${numeroFormateado}`;
-        }
-
-        function procesarFoto(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
+            const lector = new FileReader();
+            lector.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 320; // Compresión ligera para no exceder límite de celda en Google Sheets
-                    const scale = MAX_WIDTH / img.width;
-                    canvas.width = MAX_WIDTH;
-                    canvas.height = img.height * scale;
-
+                    const maxAncho = 640;
+                    const escala = Math.min(1, maxAncho / img.width);
+                    canvas.width = img.width * escala;
+                    canvas.height = img.height * escala;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                    fotoActualBase64 = canvas.toDataURL('image/jpeg', 0.65);
-                    mostrarPreviewFoto(fotoActualBase64);
+                    document.getElementById('itemFoto').value = canvas.toDataURL('image/jpeg', 0.7);
                 };
                 img.src = e.target.result;
             };
-            reader.readAsDataURL(file);
+            lector.readAsDataURL(archivo);
         }
 
-        function mostrarPreviewFoto(src) {
-            const container = document.getElementById('previewFotoContainer');
-            container.innerHTML = `<img src="${src}" class="w-full h-full object-cover">`;
-            document.getElementById('btnQuitarFoto').classList.remove('hidden');
+        function editarElemento(id) {
+            const encontrado = inventario.find(i => String(i.ID_Unico) === String(id));
+            if (encontrado) abrirModal(encontrado);
         }
 
-        function limpiarPreviewFoto() {
-            const container = document.getElementById('previewFotoContainer');
-            container.innerHTML = `<i data-lucide="camera" class="w-6 h-6 text-slate-400"></i>`;
-            document.getElementById('btnQuitarFoto').classList.add('hidden');
-            document.getElementById('inputFoto').value = '';
-        }
-
-        function quitarFoto() {
-            fotoActualBase64 = '';
-            limpiarPreviewFoto();
-            lucide.createIcons();
-        }
-
-        async function guardarItem(event) {
+        async function guardarElemento(event) {
             event.preventDefault();
-            const idExistente = document.getElementById('itemId').value;
+            const idExistente = document.getElementById('itemId').value.trim();
+            const esEdicion = Boolean(idExistente);
 
-            const datosItem = {
-                ID_Unico: idExistente || `INV-${String(Date.now()).slice(-6)}`,
-                Codigo_QR: document.getElementById('inputCodigoQR').value.trim(),
-                Nombre_Elemento: document.getElementById('inputNombre').value.trim(),
-                Clasificacion_Inventario: document.getElementById('inputClasificacion').value,
-                Area_Laboratorio: document.getElementById('inputArea').value,
-                Ubicacion_Fisica: document.getElementById('inputUbicacion').value.trim(),
-                Cantidad: parseInt(document.getElementById('inputCantidad').value) || 0,
-                Estado: document.getElementById('inputEstado').value,
-                Foto: fotoActualBase64,
-                Observaciones: document.getElementById('inputObservaciones').value.trim()
+            const itemObj = {
+                ID_Unico: idExistente || ('INV-' + Date.now()),
+                Codigo_QR: document.getElementById('itemCodigoQR').value.trim(),
+                Nombre_Elemento: document.getElementById('itemNombre').value.trim(),
+                Clasificacion_Inventario: document.getElementById('itemClasificacion').value,
+                Area_Laboratorio: document.getElementById('itemArea').value,
+                Ubicacion_Fisica: document.getElementById('itemUbicacion').value.trim(),
+                Cantidad: Number(document.getElementById('itemCantidad').value) || 0,
+                Estado: document.getElementById('itemEstado').value,
+                Foto: document.getElementById('itemFoto').value.trim(),
+                Observaciones: document.getElementById('itemObservaciones').value.trim()
             };
 
-            if (idExistente) {
-                const index = inventario.findIndex(i => i.ID_Unico === idExistente);
-                if (index !== -1) inventario[index] = datosItem;
-                guardarInventarioLocal();
-                cerrarModal();
-                renderizarTodo();
-                mostrarToast(appsScriptUrl ? "Actualizado y sincronizado con Google Sheets" : "Elemento actualizado localmente");
-                await enviarOperacionSheet({ action: 'update', item: datosItem });
+            if (esEdicion) {
+                const idx = inventario.findIndex(i => String(i.ID_Unico) === String(idExistente));
+                if (idx >= 0) inventario[idx] = itemObj;
+                else inventario.push(itemObj);
             } else {
-                inventario.unshift(datosItem);
-                guardarInventarioLocal();
-                cerrarModal();
-                renderizarTodo();
-                mostrarToast(appsScriptUrl ? "Guardado y enviado a Google Sheets" : "Elemento agregado localmente");
-                await enviarOperacionSheet({ action: 'create', item: datosItem });
+                inventario.unshift(itemObj);
             }
+
+            guardarDatosLocales();
+            actualizarOpcionesDinamicas();
+            renderizarInventario();
+            cerrarModal();
+
+            await enviarAccionSheet(esEdicion ? 'update' : 'create', { item: itemObj });
         }
 
-        function confirmarEliminar(id) {
-            const item = inventario.find(i => i.ID_Unico === id);
-            if (!item) return;
+        async function borrarElemento(id, codigo) {
+            if (!confirm(`¿Eliminar el elemento "${codigo || id}"?`)) return;
+            inventario = inventario.filter(i => String(i.ID_Unico) !== String(id));
+            guardarDatosLocales();
+            actualizarOpcionesDinamicas();
+            renderizarInventario();
 
-            document.getElementById('confirmTitulo').textContent = '¿Eliminar elemento?';
-            document.getElementById('confirmMensaje').textContent = `Se eliminará "${item.Nombre_Elemento}" (${item.Codigo_QR}) del inventario.`;
-            const btn = document.getElementById('btnConfirmarAccion');
-            btn.onclick = async function() {
-                inventario = inventario.filter(i => i.ID_Unico !== id);
-                guardarInventarioLocal();
-                renderizarTodo();
-                cerrarConfirmacion();
-                mostrarToast(appsScriptUrl ? "Eliminado de la app y de Google Sheets" : "Registro eliminado");
-                await enviarOperacionSheet({ action: 'delete', ID_Unico: id });
-            };
-            document.getElementById('modalConfirmacion').classList.remove('hidden');
+            await enviarAccionSheet('delete', { id: id });
         }
 
         function confirmarRestablecer() {
-            document.getElementById('confirmTitulo').textContent = '¿Restaurar 12 ejemplos iniciales?';
-            document.getElementById('confirmMensaje').textContent = 'Se cargará la plantilla inicial de Física y Electrónica en la vista local.';
-            const btn = document.getElementById('btnConfirmarAccion');
-            btn.onclick = function() {
-                inventario = [...DATOS_INICIALES];
-                guardarInventarioLocal();
-                renderizarTodo();
-                cerrarConfirmacion();
-                mostrarToast("Plantilla inicial restaurada");
-            };
-            document.getElementById('modalConfirmacion').classList.remove('hidden');
+            if (!confirm('¿Restaurar los ejemplos iniciales en la copia local?')) return;
+            inventario = [...EJEMPLOS_INICIALES];
+            guardarDatosLocales();
+            actualizarOpcionesDinamicas();
+            renderizarInventario();
         }
 
-        function cerrarConfirmacion() {
-            document.getElementById('modalConfirmacion').classList.add('hidden');
-        }
+        function verQR(id) {
+            const item = inventario.find(i => String(i.ID_Unico) === String(id));
+            if (!item) return;
 
-        // ==========================================
-        // MÓDULO DE REPORTES AVANZADOS POR FILTROS
-        // ==========================================
-        function actualizarSelectorUbicacionesReporte() {
-            const select = document.getElementById('repFiltroUbicacion');
-            const valorActual = select.value;
-            const ubicacionesUnicas = [...new Set(inventario.map(i => i.Ubicacion_Fisica).filter(Boolean))].sort();
+            const codigo = item.Codigo_QR || item.ID_Unico;
+            document.getElementById('qrTitulo').textContent = item.Nombre_Elemento || codigo;
+            document.getElementById('qrSubtitulo').textContent = codigo;
+            const cont = document.getElementById('contenedorQR');
+            cont.innerHTML = '';
 
-            select.innerHTML = `<option value="Todas">Todas las ubicaciones</option>` +
-                ubicacionesUnicas.map(u => `<option value="${u}">${u}</option>`).join('');
-
-            if (ubicacionesUnicas.includes(valorActual)) {
-                select.value = valorActual;
+            if (window.QRCode) {
+                new QRCode(cont, {
+                    text: codigo,
+                    width: 180,
+                    height: 180
+                });
+            } else {
+                cont.innerHTML = `<p class="text-xs text-rose-600">Generador QR no disponible</p>`;
             }
+
+            const modal = document.getElementById('modalQR');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            refrescarIconos();
         }
 
-        function limpiarFiltrosReporte() {
-            document.getElementById('repFiltroClasif').value = 'Todas';
-            document.getElementById('repFiltroArea').value = 'Todas';
-            document.getElementById('repFiltroEstado').value = 'Todos';
-            document.getElementById('repFiltroUbicacion').value = 'Todas';
-            document.getElementById('repFiltroTexto').value = '';
-            renderizarReportes();
+        function cerrarModalQR() {
+            const modal = document.getElementById('modalQR');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
-        function obtenerDatosFiltradosReporte() {
-            const clasif = document.getElementById('repFiltroClasif').value;
-            const area = document.getElementById('repFiltroArea').value;
-            const estado = document.getElementById('repFiltroEstado').value;
-            const ubicacion = document.getElementById('repFiltroUbicacion').value;
-            const texto = document.getElementById('repFiltroTexto').value.toLowerCase().trim();
+        async function abrirEscaner() {
+            const modal = document.getElementById('modalEscaner');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('estadoEscaner').textContent = 'Iniciando cámara...';
+            refrescarIconos();
 
-            return inventario.filter(item => {
-                const okClasif = clasif === 'Todas' || item.Clasificacion_Inventario === clasif;
-                const okArea = area === 'Todas' || item.Area_Laboratorio === area;
-                const okEstado = estado === 'Todos' || item.Estado === estado;
-                const okUbic = ubicacion === 'Todas' || item.Ubicacion_Fisica === ubicacion;
-                const okTexto = !texto ||
-                    item.Nombre_Elemento.toLowerCase().includes(texto) ||
-                    item.Codigo_QR.toLowerCase().includes(texto) ||
-                    (item.Observaciones && item.Observaciones.toLowerCase().includes(texto));
-
-                return okClasif && okArea && okEstado && okUbic && okTexto;
-            });
-        }
-
-        function renderizarReportes() {
-            const datos = obtenerDatosFiltradosReporte();
-
-            // Métricas resumen
-            const totalItems = datos.length;
-            const sumaUnidades = datos.reduce((acc, i) => acc + (parseInt(i.Cantidad) || 0), 0);
-            const operativos = datos
-                .filter(i => i.Estado === 'Excelente' || i.Estado === 'Bueno')
-                .reduce((acc, i) => acc + (parseInt(i.Cantidad) || 0), 0);
-            const alerta = datos
-                .filter(i => i.Estado === 'Requiere Mantenimiento' || i.Estado === 'Desecho')
-                .reduce((acc, i) => acc + (parseInt(i.Cantidad) || 0), 0);
-
-            document.getElementById('repStatItems').textContent = totalItems;
-            document.getElementById('repStatUnidades').textContent = sumaUnidades;
-            document.getElementById('repStatOperativos').textContent = operativos;
-            document.getElementById('repStatAlerta').textContent = alerta;
-            document.getElementById('repTablaCount').textContent = totalItems;
-
-            // Barras de distribución por clasificación
-            const contenedorBarras = document.getElementById('repBarrasClasificacion');
-            contenedorBarras.innerHTML = CLASIFICACIONES.map(cat => {
-                const unidadesCat = datos
-                    .filter(i => i.Clasificacion_Inventario === cat.nombre)
-                    .reduce((acc, i) => acc + (parseInt(i.Cantidad) || 0), 0);
-                const porcentaje = sumaUnidades > 0 ? Math.round((unidadesCat / sumaUnidades) * 100) : 0;
-
-                return `
-                    <div>
-                        <div class="flex justify-between text-xs mb-1">
-                            <span class="font-medium text-slate-700">${cat.nombre}</span>
-                            <span class="font-bold text-slate-900">${unidadesCat} u. <span class="text-slate-400 font-normal">(${porcentaje}%)</span></span>
-                        </div>
-                        <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                            <div class="${cat.barColor} h-2 rounded-full transition-all duration-300" style="width: ${porcentaje}%"></div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            // Tabla de auditoría
-            const tbody = document.getElementById('repTablaBody');
-            if (datos.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="8" class="py-8 text-center text-slate-400 text-sm">
-                            No hay registros que coincidan con los filtros seleccionados.
-                        </td>
-                    </tr>
-                `;
+            if (!window.Html5Qrcode) {
+                document.getElementById('estadoEscaner').textContent = 'No se pudo cargar el lector QR. Escribe el código en el buscador.';
                 return;
             }
-
-            tbody.innerHTML = datos.map(item => {
-                let badgeEstado = 'bg-emerald-50 text-emerald-700 border-emerald-200';
-                if (item.Estado === 'Bueno') badgeEstado = 'bg-sky-50 text-sky-700 border-sky-200';
-                if (item.Estado === 'Requiere Mantenimiento') badgeEstado = 'bg-amber-50 text-amber-700 border-amber-200';
-                if (item.Estado === 'Desecho') badgeEstado = 'bg-rose-50 text-rose-700 border-rose-200';
-
-                return `
-                    <tr class="hover:bg-slate-50/80 transition">
-                        <td class="py-2.5 px-4 font-mono text-xs font-bold text-slate-700 whitespace-nowrap">${item.Codigo_QR}</td>
-                        <td class="py-2.5 px-4 font-semibold text-slate-900">${item.Nombre_Elemento}</td>
-                        <td class="py-2.5 px-4 text-xs text-slate-600">${item.Clasificacion_Inventario}</td>
-                        <td class="py-2.5 px-4 text-xs text-slate-600">${item.Area_Laboratorio}</td>
-                        <td class="py-2.5 px-4 text-xs text-slate-600">${item.Ubicacion_Fisica}</td>
-                        <td class="py-2.5 px-4 text-center font-bold text-slate-900">${item.Cantidad}</td>
-                        <td class="py-2.5 px-4 whitespace-nowrap">
-                            <span class="px-2 py-0.5 rounded-md text-[11px] font-semibold border ${badgeEstado}">${item.Estado}</span>
-                        </td>
-                        <td class="py-2.5 px-4 text-xs text-slate-500 max-w-xs truncate">${item.Observaciones || '-'}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function exportarReporteCSV() {
-            const datos = obtenerDatosFiltradosReporte();
-            if (datos.length === 0) {
-                mostrarToast("No hay datos filtrados para exportar");
-                return;
-            }
-
-            const encabezados = [
-                'ID_Unico', 'Codigo_QR', 'Nombre_Elemento', 'Clasificacion_Inventario',
-                'Area_Laboratorio', 'Ubicacion_Fisica', 'Cantidad', 'Estado', 'Observaciones'
-            ];
-
-            const escaparCSV = (val) => `"${String(val ?? '').replace(/"/g, '""')}"`;
-
-            const filas = datos.map(item => [
-                escaparCSV(item.ID_Unico),
-                escaparCSV(item.Codigo_QR),
-                escaparCSV(item.Nombre_Elemento),
-                escaparCSV(item.Clasificacion_Inventario),
-                escaparCSV(item.Area_Laboratorio),
-                escaparCSV(item.Ubicacion_Fisica),
-                escaparCSV(item.Cantidad),
-                escaparCSV(item.Estado),
-                escaparCSV(item.Observaciones)
-            ].join(','));
-
-            const contenidoCSV = '\uFEFF' + [encabezados.join(','), ...filas].join('\n');
-            const blob = new Blob([contenidoCSV], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-
-            const enlace = document.createElement('a');
-            const fecha = new Date().toISOString().slice(0, 10);
-            enlace.href = url;
-            enlace.download = `Reporte_Inventario_Lab_${fecha}.csv`;
-            document.body.appendChild(enlace);
-            enlace.click();
-            document.body.removeChild(enlace);
-            URL.revokeObjectURL(url);
-
-            mostrarToast(`Reporte CSV descargado (${datos.length} registros)`);
-        }
-
-        function imprimirReportePDF() {
-            const clasif = document.getElementById('repFiltroClasif').value;
-            const area = document.getElementById('repFiltroArea').value;
-            const estado = document.getElementById('repFiltroEstado').value;
-            const ubic = document.getElementById('repFiltroUbicacion').value;
-
-            // Clonar escudo activo para el encabezado impreso
-            const printLogoContainer = document.getElementById('printLogoContainer');
-            const logoCustom = localStorage.getItem(LOGO_STORAGE_KEY);
-            if (logoCustom) {
-                printLogoContainer.innerHTML = `<img src="${logoCustom}" alt="Escudo Institucional" class="w-16 h-16 object-contain">`;
-            } else {
-                printLogoContainer.innerHTML = document.getElementById('svgEscudoDefault').outerHTML;
-            }
-
-            document.getElementById('printFecha').textContent = new Date().toLocaleDateString('es-CO', {
-                year: 'numeric', month: 'long', day: 'numeric'
-            });
-            document.getElementById('printResumenFiltros').textContent =
-                `Clasificación: ${clasif} | Área: ${area} | Estado: ${estado} | Ubicación: ${ubic}`;
-
-            window.print();
-        }
-
-        // ==========================================
-        // ESCÁNER ÓPTICO QR CON CÁMARA DEL CELULAR
-        // ==========================================
-        async function abrirEscanerQR(modo = 'buscar') {
-            modoEscanerActual = modo;
-            document.getElementById('inputCodigoManualQR').value = '';
-
-            if (modo === 'capturar') {
-                document.getElementById('tituloModalEscaner').textContent = 'Capturar Código QR / Serie';
-                document.getElementById('subtituloModalEscaner').textContent = 'El código leído se llenará automáticamente en el formulario';
-            } else {
-                document.getElementById('tituloModalEscaner').textContent = 'Escáner QR de Inventario';
-                document.getElementById('subtituloModalEscaner').textContent = 'Lee una caja o equipo para ver su ficha o registrarlo';
-            }
-
-            document.getElementById('modalEscanerQR').classList.remove('hidden');
-            document.getElementById('estadoCamaraQR').textContent = 'Iniciando cámara trasera... Permite el acceso si tu navegador lo solicita.';
-            lucide.createIcons();
 
             try {
-                if (typeof Html5Qrcode === 'undefined') {
-                    document.getElementById('estadoCamaraQR').textContent = 'Librería de cámara no cargada. Usa el ingreso manual abajo.';
-                    return;
-                }
-
-                if (html5QrScanner) {
-                    await detenerEscanerQR();
-                }
-
-                html5QrScanner = new Html5Qrcode("readerQR");
+                html5QrScanner = new Html5Qrcode('lectorQR');
                 await html5QrScanner.start(
-                    { facingMode: "environment" },
+                    { facingMode: 'environment' },
                     { fps: 10, qrbox: { width: 220, height: 220 } },
                     (decodedText) => {
-                        procesarCodigoLeido(decodedText);
+                        const codigoLeido = String(decodedText || '').trim();
+                        document.getElementById('busquedaTexto').value = codigoLeido;
+                        renderizarInventario();
+                        cerrarEscaner();
                     },
-                    () => { /* Ignorar frames sin código */ }
+                    () => {}
                 );
-                document.getElementById('estadoCamaraQR').textContent = 'Cámara activa: enfoca el código QR o de barras dentro del recuadro.';
+                document.getElementById('estadoEscaner').textContent = 'Cámara activa: apunta al código QR.';
             } catch (err) {
-                console.warn("Error iniciando cámara:", err);
-                document.getElementById('estadoCamaraQR').textContent = 'No se pudo acceder a la cámara (verifica permisos HTTPS). Puedes digitar el código abajo.';
+                document.getElementById('estadoEscaner').textContent = 'Permiso de cámara denegado o no disponible en este equipo.';
             }
         }
 
-        async function detenerEscanerQR() {
+        async function cerrarEscaner() {
+            const modal = document.getElementById('modalEscaner');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+
             if (html5QrScanner) {
                 try {
-                    if (html5QrScanner.isScanning) {
-                        await html5QrScanner.stop();
-                    }
-                    html5QrScanner.clear();
-                } catch (e) {
-                    console.warn("Error deteniendo cámara:", e);
-                }
+                    await html5QrScanner.stop();
+                    await html5QrScanner.clear();
+                } catch (e) {}
                 html5QrScanner = null;
             }
         }
 
-        async function cerrarEscanerQR() {
-            await detenerEscanerQR();
-            document.getElementById('modalEscanerQR').classList.add('hidden');
+        function abrirModalSheet() {
+            document.getElementById('inputUrlSheet').value = obtenerUrlSheet();
+            const modal = document.getElementById('modalSheet');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            refrescarIconos();
         }
 
-        async function procesarCodigoLeido(codigoRaw) {
-            const codigo = String(codigoRaw || '').trim();
-            if (!codigo) return;
+        function cerrarModalSheet() {
+            const modal = document.getElementById('modalSheet');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
 
-            await cerrarEscanerQR();
+        function guardarYConectarSheet() {
+            const url = (document.getElementById('inputUrlSheet').value || '').trim();
+            if (!url.includes('script.google.com')) {
+                alert('Ingresa una URL válida de Google Apps Script terminada en /exec.');
+                return;
+            }
+            localStorage.setItem(SHEET_URL_KEY, url);
+            actualizarIndicadorSheet();
+            cerrarModalSheet();
+            sincronizarDesdeSheets(true);
+        }
 
-            // Modo 2: Captura directa dentro del formulario de registro/edición
-            if (modoEscanerActual === 'capturar') {
-                document.getElementById('inputCodigoQR').value = codigo;
-                mostrarToast(`Código capturado: ${codigo}`);
+        function limpiarUrlSheet() {
+            localStorage.removeItem(SHEET_URL_KEY);
+            actualizarIndicadorSheet();
+            cerrarModalSheet();
+        }
+
+        async function sincronizarDesdeSheets(mostrarAlertaError = false) {
+            const url = obtenerUrlSheet();
+            actualizarIndicadorSheet();
+            if (!url) {
+                if (mostrarAlertaError) alert('Primero vincula tu URL /exec de Google Apps Script en el botón Sheet.');
                 return;
             }
 
-            // Modo 1: Consulta / Auditoría en vista principal
-            const itemEncontrado = inventario.find(
-                i => String(i.Codigo_QR).trim().toLowerCase() === codigo.toLowerCase()
-            );
+            const icono = document.getElementById('iconoSync');
+            const estadoTexto = document.getElementById('estadoSyncTexto');
+            if (icono) icono.classList.add('animate-spin');
+            if (estadoTexto) estadoTexto.textContent = 'Sincronizando con Google Sheets...';
 
-            mostrarModalResultadoQR(codigo, itemEncontrado);
-        }
+            try {
+                const resp = await fetch(url, { method: 'GET', cache: 'no-store' });
+                const data = await resp.json();
 
-        function mostrarModalResultadoQR(codigoEscaneado, item) {
-            const contenedor = document.getElementById('contenidoResultadoQR');
+                if (data.status === 'success' && Array.isArray(data.items)) {
+                    inventario = data.items;
+                    guardarDatosLocales();
+                    actualizarOpcionesDinamicas(data);
+                    renderizarInventario();
 
-            if (item) {
-                const catObj = CLASIFICACIONES.find(c => c.nombre === item.Clasificacion_Inventario) || CLASIFICACIONES[5];
-                const fotoHTML = item.Foto
-                    ? `<img src="${item.Foto}" alt="${item.Nombre_Elemento}" class="w-20 h-20 rounded-xl object-cover border border-slate-200 shrink-0">`
-                    : `<div class="w-20 h-20 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 shrink-0">
-                            <i data-lucide="${catObj.icono}" class="w-8 h-8"></i>
-                       </div>`;
-
-                contenedor.innerHTML = `
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                Elemento Encontrado
-                            </span>
-                            <span class="font-mono text-xs font-bold bg-slate-900 text-white px-2.5 py-1 rounded-lg">${item.Codigo_QR}</span>
-                        </div>
-
-                        <div class="flex items-start gap-3.5 bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
-                            ${fotoHTML}
-                            <div class="min-w-0 flex-1">
-                                <h4 class="font-bold text-slate-900 text-base leading-snug">${item.Nombre_Elemento}</h4>
-                                <p class="text-xs font-semibold text-indigo-600 mt-0.5">${item.Clasificacion_Inventario} • ${item.Area_Laboratorio}</p>
-                                <p class="text-xs text-slate-600 mt-1 flex items-center gap-1">
-                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-slate-400"></i>
-                                    <span>${item.Ubicacion_Fisica}</span>
-                                </p>
-                                <p class="text-xs text-slate-500 mt-1">Estado: <strong>${item.Estado}</strong></p>
-                            </div>
-                        </div>
-
-                        ${item.Observaciones ? `<p class="text-xs text-slate-600 bg-amber-50/70 border border-amber-200/80 p-2.5 rounded-xl italic">"${item.Observaciones}"</p>` : ''}
-
-                        <!-- Ajuste rápido de stock tras escanear -->
-                        <div class="flex items-center justify-between bg-slate-100 p-3 rounded-xl border border-slate-200">
-                            <span class="text-xs font-bold text-slate-700 uppercase">Cantidad en Stock:</span>
-                            <div class="flex items-center gap-2">
-                                <button type="button" onclick="ajustarStockDesdeModalQR('${item.ID_Unico}', -1)" class="w-9 h-9 rounded-xl bg-white hover:bg-slate-200 font-bold text-slate-800 border border-slate-300 shadow-sm transition">-</button>
-                                <span id="cantidadModalQR" class="text-lg font-extrabold text-slate-900 min-w-[2.5rem] text-center">${item.Cantidad}</span>
-                                <button type="button" onclick="ajustarStockDesdeModalQR('${item.ID_Unico}', 1)" class="w-9 h-9 rounded-xl bg-white hover:bg-slate-200 font-bold text-slate-800 border border-slate-300 shadow-sm transition">+</button>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2.5 pt-1">
-                            <button type="button" onclick="cerrarModalResultadoQR(); editarItem('${item.ID_Unico}')" class="inline-flex items-center justify-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold py-2.5 px-3 rounded-xl shadow-sm transition">
-                                <i data-lucide="pencil" class="w-4 h-4"></i>
-                                <span>Editar Ficha Completa</span>
-                            </button>
-                            <button type="button" onclick="cerrarModalResultadoQR(); abrirEscanerQR('buscar')" class="inline-flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold py-2.5 px-3 rounded-xl transition">
-                                <i data-lucide="scan-line" class="w-4 h-4"></i>
-                                <span>Escanear Otro</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            } else {
-                contenedor.innerHTML = `
-                    <div class="text-center space-y-4">
-                        <div class="mx-auto w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center">
-                            <i data-lucide="help-circle" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <span class="font-mono text-xs font-bold bg-slate-900 text-white px-2.5 py-1 rounded-lg">${codigoEscaneado}</span>
-                            <h4 class="font-bold text-slate-900 text-base mt-2">Código QR no registrado aún</h4>
-                            <p class="text-xs text-slate-500 mt-1">Este código o número de serie no aparece en el inventario actual. ¿Deseas registrarlo ahora?</p>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2.5 pt-2">
-                            <button type="button" onclick="cerrarModalResultadoQR()" class="py-2.5 px-3 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition">
-                                Cancelar
-                            </button>
-                            <button type="button" onclick="registrarNuevoConCodigoQR('${codigoEscaneado.replace(/'/g, "\\'")}')" class="inline-flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold py-2.5 px-3 rounded-xl shadow-sm transition">
-                                <i data-lucide="plus-circle" class="w-4 h-4"></i>
-                                <span>Registrar Nuevo</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }
-
-            document.getElementById('modalResultadoQR').classList.remove('hidden');
-            lucide.createIcons();
-        }
-
-        async function ajustarStockDesdeModalQR(id, delta) {
-            await cambiarCantidadRapida(id, delta);
-            const item = inventario.find(i => i.ID_Unico === id);
-            if (item && document.getElementById('cantidadModalQR')) {
-                document.getElementById('cantidadModalQR').textContent = item.Cantidad;
+                    const hora = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+                    if (estadoTexto) estadoTexto.textContent = `Sincronizado (${hora})`;
+                    document.getElementById('textoUltimaSync').textContent = `Última sync: ${hora}`;
+                } else {
+                    throw new Error(data.message || 'Respuesta inválida del servidor');
+                }
+            } catch (err) {
+                if (estadoTexto) estadoTexto.textContent = 'Error al sincronizar (usando respaldo local)';
+                if (mostrarAlertaError) alert('No se pudo sincronizar: ' + err.message);
+            } finally {
+                if (icono) icono.classList.remove('animate-spin');
             }
         }
 
-        function registrarNuevoConCodigoQR(codigo) {
-            cerrarModalResultadoQR();
-            abrirModal();
-            document.getElementById('inputCodigoQR').value = codigo;
-            document.getElementById('inputNombre').focus();
-        }
+        async function enviarAccionSheet(action, payload = {}) {
+            const url = obtenerUrlSheet();
+            if (!url) return;
 
-        function cerrarModalResultadoQR() {
-            document.getElementById('modalResultadoQR').classList.add('hidden');
-        }
+            const estadoTexto = document.getElementById('estadoSyncTexto');
+            if (estadoTexto) estadoTexto.textContent = 'Guardando en Google Sheets...';
 
-        // ==========================================
-        // GENERADOR E IMPRESIÓN DE ETIQUETA QR
-        // ==========================================
-        function abrirModalEtiquetaQR(id) {
-            const item = inventario.find(i => i.ID_Unico === id);
-            if (!item) return;
-
-            itemEtiquetaActual = item;
-            document.getElementById('etiquetaCodigoTexto').textContent = item.Codigo_QR;
-            document.getElementById('etiquetaNombreTexto').textContent = item.Nombre_Elemento;
-            document.getElementById('etiquetaUbicacionTexto').textContent = `${item.Area_Laboratorio} • ${item.Ubicacion_Fisica}`;
-
-            const contenedorQR = document.getElementById('contenedorCanvasQR');
-            contenedorQR.innerHTML = '';
-
-            if (typeof QRCode !== 'undefined') {
-                new QRCode(contenedorQR, {
-                    text: item.Codigo_QR,
-                    width: 150,
-                    height: 150,
-                    colorDark: "#0f172a",
-                    colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.M
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action, ...payload })
                 });
-            } else {
-                contenedorQR.innerHTML = `<p class="text-xs text-rose-600">Error cargando generador QR</p>`;
+                const hora = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+                if (estadoTexto) estadoTexto.textContent = `Enviado a Sheets (${hora})`;
+            } catch (err) {
+                if (estadoTexto) estadoTexto.textContent = 'Guardado local (revisa conexión)';
             }
-
-            document.getElementById('modalEtiquetaQR').classList.remove('hidden');
-            lucide.createIcons();
         }
 
-        function cerrarModalEtiquetaQR() {
-            document.getElementById('modalEtiquetaQR').classList.add('hidden');
+        function exportarCSV() {
+            const headers = [
+                'ID_Unico', 'Codigo_QR', 'Nombre_Elemento', 'Clasificacion_Inventario',
+                'Area_Laboratorio', 'Ubicacion_Fisica', 'Cantidad', 'Estado', 'Observaciones'
+            ];
+            const filas = inventario.map(i => headers.map(h => {
+                const val = String(i[h] ?? '').replace(/"/g, '""');
+                return `"${val}"`;
+            }).join(','));
+
+            const csv = [headers.join(','), ...filas].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const enlace = document.createElement('a');
+            enlace.href = URL.createObjectURL(blob);
+            enlace.download = 'inventario_derka.csv';
+            enlace.click();
         }
 
-        function descargarEtiquetaPNG() {
-            if (!itemEtiquetaActual) return;
-            const qrCanvas = document.querySelector('#contenedorCanvasQR canvas');
-            if (!qrCanvas) {
-                mostrarToast("No se pudo generar la imagen de la etiqueta");
-                return;
+        function escaparHTML(str) {
+            return String(str ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function escaparAttr(str) {
+            return escaparHTML(str).replace(/'/g, '&#39;');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            cargarDatosLocales();
+            actualizarIndicadorSheet();
+            actualizarOpcionesDinamicas();
+            renderizarInventario();
+            refrescarIconos();
+
+            if (obtenerUrlSheet()) {
+                sincronizarDesdeSheets(false);
             }
-
-            // Construir un lienzo compuesto con el encabezado institucional, QR y datos
-            const outCanvas = document.createElement('canvas');
-            outCanvas.width = 420;
-            outCanvas.height = 500;
-            const ctx = outCanvas.getContext('2d');
-
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, outCanvas.width, outCanvas.height);
-
-            // Borde punteado de recorte
-            ctx.strokeStyle = '#64748b';
-            ctx.lineWidth = 3;
-            ctx.setLineDash([8, 6]);
-            ctx.strokeRect(12, 12, outCanvas.width - 24, outCanvas.height - 24);
-            ctx.setLineDash([]);
-
-            // Nombre de la Institución
-            ctx.fillStyle = '#0f172a';
-            ctx.font = 'bold 16px Inter, Arial, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('I. E. ANTONIO DERKA SANTO DOMINGO', outCanvas.width / 2, 48);
-
-            ctx.fillStyle = '#475569';
-            ctx.font = '600 12px Inter, Arial, sans-serif';
-            ctx.fillText('INVENTARIO FÍSICO • LABORATORIO', outCanvas.width / 2, 70);
-
-            // Dibujar código QR centrado
-            ctx.drawImage(qrCanvas, (outCanvas.width - 220) / 2, 92, 220, 220);
-
-            // Código / Serie destacado
-            ctx.fillStyle = '#0f172a';
-            ctx.fillRect((outCanvas.width - 200) / 2, 330, 200, 32);
-            ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 16px monospace';
-            ctx.fillText(itemEtiquetaActual.Codigo_QR, outCanvas.width / 2, 351);
-
-            // Nombre del elemento
-            ctx.fillStyle = '#0f172a';
-            ctx.font = 'bold 16px Inter, Arial, sans-serif';
-            const nombreCorto = itemEtiquetaActual.Nombre_Elemento.length > 36
-                ? itemEtiquetaActual.Nombre_Elemento.slice(0, 34) + '...'
-                : itemEtiquetaActual.Nombre_Elemento;
-            ctx.fillText(nombreCorto, outCanvas.width / 2, 396);
-
-            // Ubicación
-            ctx.fillStyle = '#475569';
-            ctx.font = '13px Inter, Arial, sans-serif';
-            ctx.fillText(`${itemEtiquetaActual.Area_Laboratorio} • ${itemEtiquetaActual.Ubicacion_Fisica}`, outCanvas.width / 2, 424);
-
-            const link = document.createElement('a');
-            link.download = `Etiqueta_QR_${itemEtiquetaActual.Codigo_QR}.png`;
-            link.href = outCanvas.toDataURL('image/png');
-            link.click();
-
-            mostrarToast(`Etiqueta QR descargada (${itemEtiquetaActual.Codigo_QR})`);
-        }
-
-        function imprimirEtiquetaIndividual() {
-            if (!itemEtiquetaActual) return;
-            const qrImg = document.querySelector('#contenedorCanvasQR img');
-            const qrCanvas = document.querySelector('#contenedorCanvasQR canvas');
-            const srcQR = qrCanvas ? qrCanvas.toDataURL('image/png') : (qrImg ? qrImg.src : '');
-
-            const ventanaImpresion = window.open('', '_blank', 'width=420,height=520');
-            if (!ventanaImpresion) {
-                mostrarToast("Permite las ventanas emergentes para imprimir la etiqueta");
-                return;
-            }
-
-            ventanaImpresion.document.write(`
-                <!DOCTYPE html>
-                <html lang="es">
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Etiqueta QR - ${itemEtiquetaActual.Codigo_QR}</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 95vh; margin: 0; }
-                        .etiqueta { border: 2px dashed #334155; border-radius: 12px; padding: 16px 20px; width: 270px; text-align: center; }
-                        .colegio { font-size: 11px; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px; margin-bottom: 10px; }
-                        .codigo { display: inline-block; background: #0f172a; color: #fff; font-family: monospace; font-size: 13px; font-weight: bold; padding: 3px 10px; border-radius: 4px; margin-top: 8px; }
-                        .nombre { font-size: 13px; font-weight: bold; margin: 6px 0 3px; color: #0f172a; }
-                        .ubic { font-size: 11px; color: #475569; margin: 0; }
-                    </style>
-                </head>
-                <body>
-                    <div class="etiqueta">
-                        <div class="colegio">I. E. Antonio Derka Santo Domingo<br><span style="font-weight:normal;font-size:9px;">Inventario Físico • Laboratorio</span></div>
-                        <img src="${srcQR}" width="160" height="160" alt="QR">
-                        <div><span class="codigo">${itemEtiquetaActual.Codigo_QR}</span></div>
-                        <div class="nombre">${itemEtiquetaActual.Nombre_Elemento}</div>
-                        <p class="ubic">${itemEtiquetaActual.Area_Laboratorio} • ${itemEtiquetaActual.Ubicacion_Fisica}</p>
-                    </div>
-                    <script>
-                        window.onload = function() { window.print(); window.close(); };
-                    <\/script>
-                </body>
-                </html>
-            `);
-            ventanaImpresion.document.close();
-        }
-
-        function mostrarToast(mensaje) {
-            const toast = document.getElementById('toastNotificacion');
-            document.getElementById('toastTexto').textContent = mensaje;
-            toast.classList.remove('translate-y-24', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-24', 'opacity-0');
-            }, 3400);
-        }
+        });
     </script>
 </body>
 </html>
