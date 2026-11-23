@@ -11,7 +11,7 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
-    <!-- QR Code Generator & Scanner -->
+    <!-- QR Code Generator & Scanner (QR + Códigos de Barras) -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
@@ -48,7 +48,7 @@
 
             <!-- Acciones principales -->
             <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                <button type="button" onclick="abrirEscaner()" class="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-semibold text-xs sm:text-sm px-3 py-2 rounded-xl transition cursor-pointer">
+                <button type="button" onclick="abrirEscaner('buscar')" class="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-slate-950 font-semibold text-xs sm:text-sm px-3 py-2 rounded-xl transition cursor-pointer">
                     <i data-lucide="scan-line" class="w-4 h-4"></i>
                     <span>Escanear</span>
                 </button>
@@ -114,7 +114,7 @@
             <div class="flex flex-col sm:flex-row gap-2.5">
                 <div class="relative flex-1">
                     <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                    <input id="busquedaTexto" type="text" oninput="renderizarInventario()" placeholder="Buscar por nombre, código QR, ID o ubicación..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                    <input id="busquedaTexto" type="text" oninput="renderizarInventario()" placeholder="Buscar por nombre, código QR/barras, ID o ubicación..." class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
 
                 <select id="filtroArea" onchange="renderizarInventario()" class="w-full sm:w-auto px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -160,7 +160,7 @@
     </main>
 
     <!-- Modal Crear / Editar Elemento -->
-    <div id="modalElemento" class="fixed inset-0 z-50 hidden modal-backdrop items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div id="modalElemento" class="fixed inset-0 z-40 hidden modal-backdrop items-center justify-center p-3 sm:p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl w-full max-w-xl shadow-2xl border border-slate-200 overflow-hidden my-auto">
             <div class="px-5 py-4 bg-indigo-950 text-white flex items-center justify-between">
                 <h3 id="tituloModalElemento" class="text-base font-bold">Nuevo Elemento de Inventario</h3>
@@ -172,15 +172,20 @@
             <form id="formElemento" onsubmit="guardarElemento(event)" class="p-5 space-y-3.5 max-h-[82vh] overflow-y-auto">
                 <input type="hidden" id="itemId" />
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Código QR / Interno *</label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Código QR / Barras / Interno *</label>
                         <div class="flex gap-1.5">
-                            <input id="itemCodigoQR" type="text" required placeholder="Ej: EQP-004" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-                            <button type="button" onclick="generarCodigoSugerido()" title="Generar código" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 cursor-pointer">
+                            <input id="itemCodigoQR" type="text" required placeholder="Escanea, genera o escribe..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                            <button type="button" onclick="abrirEscaner('formulario')" title="Escanear QR o Código de Barras con cámara" class="px-3 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl border border-emerald-200 inline-flex items-center gap-1 text-xs font-semibold shrink-0 cursor-pointer">
+                                <i data-lucide="scan-line" class="w-4 h-4"></i>
+                                <span>Leer</span>
+                            </button>
+                            <button type="button" onclick="generarCodigoSugerido()" title="Generar código automático" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 shrink-0 cursor-pointer">
                                 <i data-lucide="sparkles" class="w-4 h-4"></i>
                             </button>
                         </div>
+                        <p class="text-[11px] text-slate-400 mt-1">Usa <strong>Leer</strong> para vincular un QR/código de barras existente, <strong>✨</strong> para autogenerar o escríbelo.</p>
                     </div>
 
                     <div>
@@ -261,13 +266,13 @@
         </div>
     </div>
 
-    <!-- Modal Escáner QR -->
+    <!-- Modal Escáner QR y Código de Barras (z-50 para quedar encima de modalElemento) -->
     <div id="modalEscaner" class="fixed inset-0 z-50 hidden modal-backdrop items-center justify-center p-4">
         <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl border border-slate-200">
             <div class="px-4 py-3 bg-slate-900 text-white flex items-center justify-between">
-                <h3 class="text-sm font-bold flex items-center gap-2">
+                <h3 id="tituloModalEscaner" class="text-sm font-bold flex items-center gap-2">
                     <i data-lucide="scan-line" class="w-4 h-4 text-emerald-400"></i>
-                    Escanear Código QR
+                    Escanear QR o Código de Barras
                 </h3>
                 <button type="button" onclick="cerrarEscaner()" class="text-slate-300 hover:text-white cursor-pointer">
                     <i data-lucide="x" class="w-5 h-5"></i>
@@ -275,7 +280,7 @@
             </div>
             <div class="p-4 space-y-3">
                 <div id="lectorQR" class="w-full rounded-xl overflow-hidden bg-slate-950 min-h-[240px]"></div>
-                <p id="estadoEscaner" class="text-xs text-slate-500 text-center">Apunta la cámara hacia el código QR del elemento.</p>
+                <p id="estadoEscaner" class="text-xs text-slate-500 text-center">Apunta la cámara hacia el código QR o de barras.</p>
                 <button type="button" onclick="cerrarEscaner()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl cursor-pointer">
                     Cerrar Escáner
                 </button>
@@ -372,6 +377,7 @@
         let metaServidor = { areas: [], clasificaciones: [], estados: [] };
         let categoriaActiva = 'Todas';
         let html5QrScanner = null;
+        let modoEscaner = 'buscar'; // 'buscar' | 'formulario'
 
         function claveCanon(texto) {
             return String(texto || '')
@@ -856,32 +862,61 @@
             modal.classList.remove('flex');
         }
 
-        async function abrirEscaner() {
+        async function abrirEscaner(modo = 'buscar') {
+            modoEscaner = modo;
             const modal = document.getElementById('modalEscaner');
+            const titulo = document.getElementById('tituloModalEscaner');
+            if (titulo) {
+                titulo.innerHTML = `<i data-lucide="scan-line" class="w-4 h-4 text-emerald-400"></i> ${
+                    modo === 'formulario' ? 'Vincular QR o Código de Barras' : 'Escanear QR o Código de Barras'
+                }`;
+            }
+
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             document.getElementById('estadoEscaner').textContent = 'Iniciando cámara...';
             refrescarIconos();
 
             if (!window.Html5Qrcode) {
-                document.getElementById('estadoEscaner').textContent = 'No se pudo cargar el lector QR. Escribe el código en el buscador.';
+                document.getElementById('estadoEscaner').textContent = 'No se pudo cargar el lector. Escribe el código manualmente.';
                 return;
             }
 
             try {
-                html5QrScanner = new Html5Qrcode('lectorQR');
+                // Soporta QR y códigos de barras estándar (Code-128, EAN-13, EAN-8, UPC, Code-39, ITF, Codabar)
+                const formatosSoportados = window.Html5QrcodeSupportedFormats ? [
+                    Html5QrcodeSupportedFormats.QR_CODE,
+                    Html5QrcodeSupportedFormats.CODE_128,
+                    Html5QrcodeSupportedFormats.CODE_39,
+                    Html5QrcodeSupportedFormats.EAN_13,
+                    Html5QrcodeSupportedFormats.EAN_8,
+                    Html5QrcodeSupportedFormats.UPC_A,
+                    Html5QrcodeSupportedFormats.UPC_E,
+                    Html5QrcodeSupportedFormats.ITF,
+                    Html5QrcodeSupportedFormats.CODABAR
+                ] : undefined;
+
+                html5QrScanner = new Html5Qrcode('lectorQR', formatosSoportados ? { formatsToSupport: formatosSoportados, verbose: false } : false);
                 await html5QrScanner.start(
                     { facingMode: 'environment' },
-                    { fps: 10, qrbox: { width: 220, height: 220 } },
+                    {
+                        fps: 12,
+                        qrbox: { width: 250, height: 180 }
+                    },
                     (decodedText) => {
                         const codigoLeido = String(decodedText || '').trim();
-                        document.getElementById('busquedaTexto').value = codigoLeido;
-                        renderizarInventario();
+                        if (modoEscaner === 'formulario') {
+                            const campoForm = document.getElementById('itemCodigoQR');
+                            if (campoForm) campoForm.value = codigoLeido;
+                        } else {
+                            document.getElementById('busquedaTexto').value = codigoLeido;
+                            renderizarInventario();
+                        }
                         cerrarEscaner();
                     },
                     () => {}
                 );
-                document.getElementById('estadoEscaner').textContent = 'Cámara activa: apunta al código QR.';
+                document.getElementById('estadoEscaner').textContent = 'Cámara activa: encuadra el QR o el código de barras.';
             } catch (err) {
                 document.getElementById('estadoEscaner').textContent = 'Permiso de cámara denegado o no disponible en este equipo.';
             }
