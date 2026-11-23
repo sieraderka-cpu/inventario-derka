@@ -326,7 +326,7 @@
         const META_CACHE_KEY = 'derka_meta_v1';
 
         const CLASIFICACIONES_BASE = ['Muebles', 'Equipos', 'Herramientas', 'Elementos', 'Insumos', 'Otros'];
-        const AREAS_BASE = ['Electronica', 'Lab Fisica'];
+        const AREAS_BASE = ['Electrónica', 'Lab Fisica'];
         const ESTADOS_BASE = ['Excelente', 'Bueno', 'Regular', 'Requiere Mantenimiento', 'Desecho', 'Dado de Baja'];
 
         const EJEMPLOS_INICIALES = [
@@ -335,7 +335,7 @@
                 Codigo_QR: 'MUE-01',
                 Nombre_Elemento: 'Mesa de trabajo',
                 Clasificacion_Inventario: 'Muebles',
-                Area_Laboratorio: 'Electronica',
+                Area_Laboratorio: 'Electrónica',
                 Ubicacion_Fisica: 'Aula',
                 Cantidad: 11,
                 Estado: 'Requiere Mantenimiento',
@@ -347,7 +347,7 @@
                 Codigo_QR: 'MUE-02',
                 Nombre_Elemento: 'Sillas metálicas',
                 Clasificacion_Inventario: 'Muebles',
-                Area_Laboratorio: 'Electronica',
+                Area_Laboratorio: 'Electrónica',
                 Ubicacion_Fisica: 'Aula',
                 Cantidad: 30,
                 Estado: 'Requiere Mantenimiento',
@@ -359,7 +359,7 @@
                 Codigo_QR: 'EQP-001',
                 Nombre_Elemento: 'Osciloscopio',
                 Clasificacion_Inventario: 'Equipos',
-                Area_Laboratorio: 'Electronica',
+                Area_Laboratorio: 'Electrónica',
                 Ubicacion_Fisica: 'Gabinete gris',
                 Cantidad: 1,
                 Estado: 'Excelente',
@@ -425,9 +425,9 @@
                     const parsedMeta = JSON.parse(metaGuardada);
                     if (parsedMeta && typeof parsedMeta === 'object') {
                         metaServidor = {
-                            areas: Array.isArray(parsedMeta.areas) ? parsedMeta.areas : [],
-                            clasificaciones: Array.isArray(parsedMeta.clasificaciones) ? parsedMeta.clasificaciones : [],
-                            estados: Array.isArray(parsedMeta.estados) ? parsedMeta.estados : []
+                            areas: unirSinDuplicados([parsedMeta.areas]),
+                            clasificaciones: unirSinDuplicados([parsedMeta.clasificaciones]),
+                            estados: unirSinDuplicados([parsedMeta.estados])
                         };
                     }
                 }
@@ -472,57 +472,71 @@
             }
         }
 
+        function obtenerListasCompletas() {
+            return {
+                areas: unirSinDuplicados([
+                    metaServidor.areas,
+                    AREAS_BASE,
+                    inventario.map(i => i.Area_Laboratorio)
+                ]),
+                clasificaciones: unirSinDuplicados([
+                    metaServidor.clasificaciones,
+                    CLASIFICACIONES_BASE,
+                    inventario.map(i => i.Clasificacion_Inventario)
+                ]),
+                estados: unirSinDuplicados([
+                    metaServidor.estados,
+                    ESTADOS_BASE,
+                    inventario.map(i => i.Estado)
+                ])
+            };
+        }
+
+        function poblarSelect(id, opciones, incluirTodas, textoTodas) {
+            const sel = document.getElementById(id);
+            if (!sel) return;
+            const prev = sel.value;
+
+            let html = '';
+            if (incluirTodas) {
+                const etiqueta = textoTodas === 'Todas' ? 'Área: Todas' : 'Estado: Todos';
+                html += `<option value="${escaparAttr(textoTodas)}">${escaparHTML(etiqueta)}</option>`;
+            }
+            html += opciones.map(op => `<option value="${escaparAttr(op)}">${escaparHTML(op)}</option>`).join('');
+            sel.innerHTML = html;
+
+            if (prev) {
+                const match = Array.from(sel.options).find(o => claveCanon(o.value) === claveCanon(prev));
+                if (match) {
+                    sel.value = match.value;
+                    return;
+                }
+            }
+            if (incluirTodas) {
+                sel.value = textoTodas;
+            } else if (sel.options.length > 0) {
+                sel.selectedIndex = 0;
+            }
+        }
+
         function actualizarOpcionesDinamicas(data = null) {
             if (data && typeof data === 'object') {
                 metaServidor = {
-                    areas: Array.isArray(data.areas) ? data.areas : metaServidor.areas,
-                    clasificaciones: Array.isArray(data.clasificaciones) ? data.clasificaciones : metaServidor.clasificaciones,
-                    estados: Array.isArray(data.estados) ? data.estados : metaServidor.estados
+                    areas: unirSinDuplicados([metaServidor.areas, data.areas]),
+                    clasificaciones: unirSinDuplicados([metaServidor.clasificaciones, data.clasificaciones]),
+                    estados: unirSinDuplicados([metaServidor.estados, data.estados])
                 };
+                guardarDatosLocales();
             }
 
-            const todasAreas = unirSinDuplicados([
-                metaServidor.areas,
-                AREAS_BASE,
-                inventario.map(i => i.Area_Laboratorio)
-            ]);
+            const listas = obtenerListasCompletas();
+            poblarSelect('filtroArea', listas.areas, true, 'Todas');
+            poblarSelect('itemArea', listas.areas, false, '');
+            poblarSelect('filtroEstado', listas.estados, true, 'Todos');
+            poblarSelect('itemEstado', listas.estados, false, '');
+            poblarSelect('itemClasificacion', listas.clasificaciones, false, '');
 
-            const todasClasif = unirSinDuplicados([
-                metaServidor.clasificaciones,
-                CLASIFICACIONES_BASE,
-                inventario.map(i => i.Clasificacion_Inventario)
-            ]);
-
-            const todosEstados = unirSinDuplicados([
-                metaServidor.estados,
-                ESTADOS_BASE,
-                inventario.map(i => i.Estado)
-            ]);
-
-            const poblarSelect = (id, opciones, incluirTodas, textoTodas) => {
-                const sel = document.getElementById(id);
-                if (!sel) return;
-                const prev = sel.value;
-                let html = incluirTodas ? `<option value="${textoTodas}">${textoTodas === 'Todas' ? 'Área: Todas' : 'Estado: Todos'}</option>` : '';
-                html += opciones.map(op => `<option value="${escaparAttr(op)}">${escaparHTML(op)}</option>`).join('');
-                sel.innerHTML = html;
-
-                const existe = Array.from(sel.options).some(o => claveCanon(o.value) === claveCanon(prev));
-                if (existe) {
-                    const match = Array.from(sel.options).find(o => claveCanon(o.value) === claveCanon(prev));
-                    if (match) sel.value = match.value;
-                } else if (incluirTodas) {
-                    sel.value = textoTodas;
-                }
-            };
-
-            poblarSelect('filtroArea', todasAreas, true, 'Todas');
-            poblarSelect('itemArea', todasAreas, false, '');
-            poblarSelect('filtroEstado', todosEstados, true, 'Todos');
-            poblarSelect('itemEstado', todosEstados, false, '');
-            poblarSelect('itemClasificacion', todasClasif, false, '');
-
-            renderizarPillsClasificaciones(todasClasif);
+            renderizarPillsClasificaciones(listas.clasificaciones);
         }
 
         function renderizarPillsClasificaciones(categorias = CLASIFICACIONES_BASE) {
@@ -549,7 +563,7 @@
 
         function seleccionarCategoria(cat) {
             categoriaActiva = cat;
-            actualizarOpcionesDinamicas();
+            renderizarPillsClasificaciones(obtenerListasCompletas().clasificaciones);
             renderizarInventario();
         }
 
@@ -672,7 +686,11 @@
         }
 
         function abrirModal(item = null) {
-            actualizarOpcionesDinamicas();
+            const listas = obtenerListasCompletas();
+            poblarSelect('itemArea', listas.areas, false, '');
+            poblarSelect('itemEstado', listas.estados, false, '');
+            poblarSelect('itemClasificacion', listas.clasificaciones, false, '');
+
             const modal = document.getElementById('modalElemento');
             document.getElementById('formElemento').reset();
 
@@ -681,10 +699,20 @@
                 document.getElementById('itemId').value = item.ID_Unico || '';
                 document.getElementById('itemCodigoQR').value = item.Codigo_QR || '';
                 document.getElementById('itemNombre').value = item.Nombre_Elemento || '';
-                document.getElementById('itemClasificacion').value = item.Clasificacion_Inventario || 'Otros';
-                document.getElementById('itemArea').value = item.Area_Laboratorio || document.getElementById('itemArea').value;
+
+                const matchClasif = Array.from(document.getElementById('itemClasificacion').options)
+                    .find(o => claveCanon(o.value) === claveCanon(item.Clasificacion_Inventario));
+                document.getElementById('itemClasificacion').value = matchClasif ? matchClasif.value : document.getElementById('itemClasificacion').options[0]?.value || '';
+
+                const matchArea = Array.from(document.getElementById('itemArea').options)
+                    .find(o => claveCanon(o.value) === claveCanon(item.Area_Laboratorio));
+                document.getElementById('itemArea').value = matchArea ? matchArea.value : document.getElementById('itemArea').options[0]?.value || '';
+
+                const matchEstado = Array.from(document.getElementById('itemEstado').options)
+                    .find(o => claveCanon(o.value) === claveCanon(item.Estado));
+                document.getElementById('itemEstado').value = matchEstado ? matchEstado.value : document.getElementById('itemEstado').options[0]?.value || '';
+
                 document.getElementById('itemCantidad').value = Number(item.Cantidad) || 0;
-                document.getElementById('itemEstado').value = item.Estado || 'Bueno';
                 document.getElementById('itemUbicacion').value = item.Ubicacion_Fisica || '';
                 document.getElementById('itemFoto').value = item.Foto || '';
                 document.getElementById('itemObservaciones').value = item.Observaciones || '';
@@ -763,6 +791,12 @@
             } else {
                 inventario.unshift(itemObj);
             }
+
+            metaServidor = {
+                areas: unirSinDuplicados([metaServidor.areas, [itemObj.Area_Laboratorio]]),
+                clasificaciones: unirSinDuplicados([metaServidor.clasificaciones, [itemObj.Clasificacion_Inventario]]),
+                estados: unirSinDuplicados([metaServidor.estados, [itemObj.Estado]])
+            };
 
             guardarDatosLocales();
             actualizarOpcionesDinamicas();
