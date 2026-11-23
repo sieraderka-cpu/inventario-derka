@@ -58,7 +58,7 @@
                     <span class="hidden sm:inline">Nuevo</span>
                 </button>
 
-                <button type="button" onclick="abrirModalSheet()" title="Conectar Google Sheets" class="inline-flex items-center gap-1 bg-indigo-800/80 hover:bg-indigo-700 text-indigo-100 text-xs font-medium px-2.5 py-2 rounded-xl border border-indigo-600/50 transition cursor-pointer">
+                <button type="button" onclick="abrirModalSheet()" title="Configurar o cambiar URL de Google Sheets" class="inline-flex items-center gap-1 bg-indigo-800/80 hover:bg-indigo-700 text-indigo-100 text-xs font-medium px-2.5 py-2 rounded-xl border border-indigo-600/50 transition cursor-pointer">
                     <span id="dotSheet" class="w-2 h-2 rounded-full bg-amber-400"></span>
                     <span class="hidden md:inline" id="labelSheet">Sheet</span>
                     <i data-lucide="database" class="w-4 h-4"></i>
@@ -119,18 +119,10 @@
 
                 <select id="filtroArea" onchange="renderizarInventario()" class="w-full sm:w-auto px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="Todas">Área: Todas</option>
-                    <option value="Electrónica">Electrónica</option>
-                    <option value="Física">Física</option>
                 </select>
 
                 <select id="filtroEstado" onchange="renderizarInventario()" class="w-full sm:w-auto px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <option value="Todos">Estado: Todos</option>
-                    <option value="Excelente">Excelente</option>
-                    <option value="Bueno">Bueno</option>
-                    <option value="Regular">Regular</option>
-                    <option value="Requiere Mantenimiento">Requiere Mantenimiento</option>
-                    <option value="Desecho">Desecho</option>
-                    <option value="Dado de Baja">Dado de Baja</option>
                 </select>
 
                 <button type="button" onclick="confirmarRestablecer()" title="Restaurar ejemplos iniciales" class="p-2.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl border border-slate-200 transition self-end sm:self-auto cursor-pointer">
@@ -205,34 +197,17 @@
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Clasificación</label>
-                        <select id="itemClasificacion" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="Muebles">Muebles</option>
-                            <option value="Equipos">Equipos</option>
-                            <option value="Herramientas">Herramientas</option>
-                            <option value="Elementos">Elementos</option>
-                            <option value="Insumos">Insumos</option>
-                            <option value="Otros">Otros</option>
-                        </select>
+                        <select id="itemClasificacion" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Área / Laboratorio</label>
-                        <select id="itemArea" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="Electrónica">Electrónica</option>
-                            <option value="Física">Física</option>
-                        </select>
+                        <select id="itemArea" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Estado</label>
-                        <select id="itemEstado" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="Excelente">Excelente</option>
-                            <option value="Bueno">Bueno</option>
-                            <option value="Regular">Regular</option>
-                            <option value="Requiere Mantenimiento">Requiere Mantenimiento</option>
-                            <option value="Desecho">Desecho</option>
-                            <option value="Dado de Baja">Dado de Baja</option>
-                        </select>
+                        <select id="itemEstado" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
                     </div>
                 </div>
 
@@ -312,7 +287,7 @@
     <div id="modalSheet" class="fixed inset-0 z-50 hidden modal-backdrop items-center justify-center p-4">
         <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl border border-slate-200 overflow-hidden">
             <div class="px-5 py-4 bg-indigo-950 text-white flex items-center justify-between">
-                <h3 class="text-base font-bold">Conectar con Google Sheets</h3>
+                <h3 class="text-base font-bold">Configurar Conexión Google Sheets</h3>
                 <button type="button" onclick="cerrarModalSheet()" class="text-indigo-200 hover:text-white cursor-pointer">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
@@ -324,7 +299,7 @@
                     </label>
                     <input id="inputUrlSheet" type="url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                     <p class="text-[11px] text-slate-500 mt-1">
-                        Se guarda únicamente en este navegador y no queda expuesta en el código fuente de GitHub.
+                        Se guarda únicamente en este dispositivo y no queda expuesta en GitHub.
                     </p>
                 </div>
 
@@ -348,9 +323,10 @@
     <script>
         const STORAGE_KEY = 'derka_inventario_v1';
         const SHEET_URL_KEY = 'derka_sheet_url';
+        const META_CACHE_KEY = 'derka_meta_v1';
 
         const CLASIFICACIONES_BASE = ['Muebles', 'Equipos', 'Herramientas', 'Elementos', 'Insumos', 'Otros'];
-        const AREAS_BASE = ['Electrónica', 'Física'];
+        const AREAS_BASE = ['Electronica', 'Lab Fisica'];
         const ESTADOS_BASE = ['Excelente', 'Bueno', 'Regular', 'Requiere Mantenimiento', 'Desecho', 'Dado de Baja'];
 
         const EJEMPLOS_INICIALES = [
@@ -359,7 +335,7 @@
                 Codigo_QR: 'MUE-01',
                 Nombre_Elemento: 'Mesa de trabajo',
                 Clasificacion_Inventario: 'Muebles',
-                Area_Laboratorio: 'Electrónica',
+                Area_Laboratorio: 'Electronica',
                 Ubicacion_Fisica: 'Aula',
                 Cantidad: 11,
                 Estado: 'Requiere Mantenimiento',
@@ -371,7 +347,7 @@
                 Codigo_QR: 'MUE-02',
                 Nombre_Elemento: 'Sillas metálicas',
                 Clasificacion_Inventario: 'Muebles',
-                Area_Laboratorio: 'Electrónica',
+                Area_Laboratorio: 'Electronica',
                 Ubicacion_Fisica: 'Aula',
                 Cantidad: 30,
                 Estado: 'Requiere Mantenimiento',
@@ -383,7 +359,7 @@
                 Codigo_QR: 'EQP-001',
                 Nombre_Elemento: 'Osciloscopio',
                 Clasificacion_Inventario: 'Equipos',
-                Area_Laboratorio: 'Electrónica',
+                Area_Laboratorio: 'Electronica',
                 Ubicacion_Fisica: 'Gabinete gris',
                 Cantidad: 1,
                 Estado: 'Excelente',
@@ -393,8 +369,33 @@
         ];
 
         let inventario = [];
+        let metaServidor = { areas: [], clasificaciones: [], estados: [] };
         let categoriaActiva = 'Todas';
         let html5QrScanner = null;
+
+        function claveCanon(texto) {
+            return String(texto || '')
+                .trim()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase();
+        }
+
+        function unirSinDuplicados(listas) {
+            const mapa = new Map();
+            listas.forEach(lista => {
+                if (!Array.isArray(lista)) return;
+                lista.forEach(raw => {
+                    const limpio = String(raw || '').trim();
+                    if (!limpio) return;
+                    const clave = claveCanon(limpio);
+                    if (!mapa.has(clave)) {
+                        mapa.set(clave, limpio);
+                    }
+                });
+            });
+            return Array.from(mapa.values());
+        }
 
         function refrescarIconos() {
             try {
@@ -413,19 +414,32 @@
                     const parsed = JSON.parse(guardado);
                     if (Array.isArray(parsed)) {
                         inventario = parsed;
-                        return;
+                    }
+                } else {
+                    inventario = [...EJEMPLOS_INICIALES];
+                    guardarDatosLocales();
+                }
+
+                const metaGuardada = localStorage.getItem(META_CACHE_KEY);
+                if (metaGuardada) {
+                    const parsedMeta = JSON.parse(metaGuardada);
+                    if (parsedMeta && typeof parsedMeta === 'object') {
+                        metaServidor = {
+                            areas: Array.isArray(parsedMeta.areas) ? parsedMeta.areas : [],
+                            clasificaciones: Array.isArray(parsedMeta.clasificaciones) ? parsedMeta.clasificaciones : [],
+                            estados: Array.isArray(parsedMeta.estados) ? parsedMeta.estados : []
+                        };
                     }
                 }
             } catch (e) {
-                console.warn('Error leyendo localStorage:', e);
+                inventario = [...EJEMPLOS_INICIALES];
             }
-            inventario = [...EJEMPLOS_INICIALES];
-            guardarDatosLocales();
         }
 
         function guardarDatosLocales() {
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(inventario));
+                localStorage.setItem(META_CACHE_KEY, JSON.stringify(metaServidor));
             } catch (e) {
                 console.warn('Error guardando en localStorage:', e);
             }
@@ -446,70 +460,67 @@
             const estadoTexto = document.getElementById('estadoSyncTexto');
 
             if (url) {
-                dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+                if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
                 if (label) label.textContent = 'Conectado';
-                estadoTexto.textContent = 'Vinculado a Google Sheets';
+                if (estadoTexto && estadoTexto.textContent === 'Modo local listo') {
+                    estadoTexto.textContent = 'Vinculado a Google Sheets';
+                }
             } else {
-                dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+                if (dot) dot.className = 'w-2 h-2 rounded-full bg-amber-400';
                 if (label) label.textContent = 'Sheet';
-                estadoTexto.textContent = 'Sin URL vinculada (modo local)';
+                if (estadoTexto) estadoTexto.textContent = 'Sin URL vinculada (modo local)';
             }
         }
 
-        function actualizarOpcionesDinamicas(data = {}) {
-            const areasDesdeItems = inventario.map(i => String(i.Area_Laboratorio || '').trim()).filter(Boolean);
-            const clasifDesdeItems = inventario.map(i => String(i.Clasificacion_Inventario || '').trim()).filter(Boolean);
-            const estadosDesdeItems = inventario.map(i => String(i.Estado || '').trim()).filter(Boolean);
-
-            const areasServidor = Array.isArray(data.areas) ? data.areas.map(v => String(v || '').trim()).filter(Boolean) : [];
-            const clasifServidor = Array.isArray(data.clasificaciones) ? data.clasificaciones.map(v => String(v || '').trim()).filter(Boolean) : [];
-            const estadosServidor = Array.isArray(data.estados) ? data.estados.map(v => String(v || '').trim()).filter(Boolean) : [];
-
-            const todasAreas = Array.from(new Set([...AREAS_BASE, ...areasServidor, ...areasDesdeItems]));
-            const todasClasif = Array.from(new Set([...CLASIFICACIONES_BASE, ...clasifServidor, ...clasifDesdeItems]));
-            const todosEstados = Array.from(new Set([...ESTADOS_BASE, ...estadosServidor, ...estadosDesdeItems]));
-
-            // Filtro Área
-            const filtroArea = document.getElementById('filtroArea');
-            if (filtroArea) {
-                const prev = filtroArea.value;
-                filtroArea.innerHTML = '<option value="Todas">Área: Todas</option>' +
-                    todasAreas.map(a => `<option value="${escaparHTML(a)}">${escaparHTML(a)}</option>`).join('');
-                filtroArea.value = todasAreas.includes(prev) ? prev : 'Todas';
+        function actualizarOpcionesDinamicas(data = null) {
+            if (data && typeof data === 'object') {
+                metaServidor = {
+                    areas: Array.isArray(data.areas) ? data.areas : metaServidor.areas,
+                    clasificaciones: Array.isArray(data.clasificaciones) ? data.clasificaciones : metaServidor.clasificaciones,
+                    estados: Array.isArray(data.estados) ? data.estados : metaServidor.estados
+                };
             }
 
-            // Select Área en modal
-            const itemArea = document.getElementById('itemArea');
-            if (itemArea) {
-                const prev = itemArea.value;
-                itemArea.innerHTML = todasAreas.map(a => `<option value="${escaparHTML(a)}">${escaparHTML(a)}</option>`).join('');
-                if (todasAreas.includes(prev)) itemArea.value = prev;
-            }
+            const todasAreas = unirSinDuplicados([
+                metaServidor.areas,
+                AREAS_BASE,
+                inventario.map(i => i.Area_Laboratorio)
+            ]);
 
-            // Filtro Estado
-            const filtroEstado = document.getElementById('filtroEstado');
-            if (filtroEstado) {
-                const prev = filtroEstado.value;
-                filtroEstado.innerHTML = '<option value="Todos">Estado: Todos</option>' +
-                    todosEstados.map(e => `<option value="${escaparHTML(e)}">${escaparHTML(e)}</option>`).join('');
-                filtroEstado.value = todosEstados.includes(prev) ? prev : 'Todos';
-            }
+            const todasClasif = unirSinDuplicados([
+                metaServidor.clasificaciones,
+                CLASIFICACIONES_BASE,
+                inventario.map(i => i.Clasificacion_Inventario)
+            ]);
 
-            // Select Estado en modal
-            const itemEstado = document.getElementById('itemEstado');
-            if (itemEstado) {
-                const prev = itemEstado.value;
-                itemEstado.innerHTML = todosEstados.map(e => `<option value="${escaparHTML(e)}">${escaparHTML(e)}</option>`).join('');
-                if (todosEstados.includes(prev)) itemEstado.value = prev;
-            }
+            const todosEstados = unirSinDuplicados([
+                metaServidor.estados,
+                ESTADOS_BASE,
+                inventario.map(i => i.Estado)
+            ]);
 
-            // Select Clasificación en modal
-            const itemClasif = document.getElementById('itemClasificacion');
-            if (itemClasif) {
-                const prev = itemClasif.value;
-                itemClasif.innerHTML = todasClasif.map(c => `<option value="${escaparHTML(c)}">${escaparHTML(c)}</option>`).join('');
-                if (todasClasif.includes(prev)) itemClasif.value = prev;
-            }
+            const poblarSelect = (id, opciones, incluirTodas, textoTodas) => {
+                const sel = document.getElementById(id);
+                if (!sel) return;
+                const prev = sel.value;
+                let html = incluirTodas ? `<option value="${textoTodas}">${textoTodas === 'Todas' ? 'Área: Todas' : 'Estado: Todos'}</option>` : '';
+                html += opciones.map(op => `<option value="${escaparAttr(op)}">${escaparHTML(op)}</option>`).join('');
+                sel.innerHTML = html;
+
+                const existe = Array.from(sel.options).some(o => claveCanon(o.value) === claveCanon(prev));
+                if (existe) {
+                    const match = Array.from(sel.options).find(o => claveCanon(o.value) === claveCanon(prev));
+                    if (match) sel.value = match.value;
+                } else if (incluirTodas) {
+                    sel.value = textoTodas;
+                }
+            };
+
+            poblarSelect('filtroArea', todasAreas, true, 'Todas');
+            poblarSelect('itemArea', todasAreas, false, '');
+            poblarSelect('filtroEstado', todosEstados, true, 'Todos');
+            poblarSelect('itemEstado', todosEstados, false, '');
+            poblarSelect('itemClasificacion', todasClasif, false, '');
 
             renderizarPillsClasificaciones(todasClasif);
         }
@@ -519,10 +530,12 @@
             if (!contenedor) return;
 
             const lista = ['Todas', ...categorias];
-            if (!lista.includes(categoriaActiva)) categoriaActiva = 'Todas';
+            if (!lista.some(c => claveCanon(c) === claveCanon(categoriaActiva))) {
+                categoriaActiva = 'Todas';
+            }
 
             contenedor.innerHTML = lista.map(cat => {
-                const activa = cat === categoriaActiva;
+                const activa = claveCanon(cat) === claveCanon(categoriaActiva);
                 const clases = activa
                     ? 'bg-indigo-600 text-white border-indigo-600'
                     : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200/70';
@@ -536,17 +549,12 @@
 
         function seleccionarCategoria(cat) {
             categoriaActiva = cat;
-            renderizarPillsClasificaciones(
-                Array.from(new Set([
-                    ...CLASIFICACIONES_BASE,
-                    ...inventario.map(i => String(i.Clasificacion_Inventario || '').trim()).filter(Boolean)
-                ]))
-            );
+            actualizarOpcionesDinamicas();
             renderizarInventario();
         }
 
         function badgeEstado(estado) {
-            const e = String(estado || '').toLowerCase();
+            const e = claveCanon(estado);
             if (e.includes('excelente') || e.includes('bueno')) {
                 return 'bg-emerald-100 text-emerald-800 border-emerald-200';
             }
@@ -562,9 +570,9 @@
             const estadoSel = document.getElementById('filtroEstado')?.value || 'Todos';
 
             const filtrados = inventario.filter(item => {
-                const coincideCat = categoriaActiva === 'Todas' || String(item.Clasificacion_Inventario || '') === categoriaActiva;
-                const coincideArea = areaSel === 'Todas' || String(item.Area_Laboratorio || '') === areaSel;
-                const coincideEstado = estadoSel === 'Todos' || String(item.Estado || '') === estadoSel;
+                const coincideCat = categoriaActiva === 'Todas' || claveCanon(item.Clasificacion_Inventario) === claveCanon(categoriaActiva);
+                const coincideArea = areaSel === 'Todas' || claveCanon(item.Area_Laboratorio) === claveCanon(areaSel);
+                const coincideEstado = estadoSel === 'Todos' || claveCanon(item.Estado) === claveCanon(estadoSel);
 
                 const hayTexto = !texto || [
                     item.ID_Unico,
@@ -579,10 +587,9 @@
                 return coincideCat && coincideArea && coincideEstado && hayTexto;
             });
 
-            // Estadísticas generales
             const totalUnidades = inventario.reduce((acc, i) => acc + (Number(i.Cantidad) || 0), 0);
-            const totalBuenos = inventario.filter(i => ['excelente', 'bueno'].includes(String(i.Estado || '').toLowerCase())).length;
-            const totalMant = inventario.filter(i => String(i.Estado || '').toLowerCase().includes('mantenimiento')).length;
+            const totalBuenos = inventario.filter(i => ['excelente', 'bueno'].includes(claveCanon(i.Estado))).length;
+            const totalMant = inventario.filter(i => claveCanon(i.Estado).includes('mantenimiento')).length;
 
             document.getElementById('statReferencias').textContent = inventario.length;
             document.getElementById('statUnidades').textContent = totalUnidades;
@@ -675,7 +682,7 @@
                 document.getElementById('itemCodigoQR').value = item.Codigo_QR || '';
                 document.getElementById('itemNombre').value = item.Nombre_Elemento || '';
                 document.getElementById('itemClasificacion').value = item.Clasificacion_Inventario || 'Otros';
-                document.getElementById('itemArea').value = item.Area_Laboratorio || 'Electrónica';
+                document.getElementById('itemArea').value = item.Area_Laboratorio || document.getElementById('itemArea').value;
                 document.getElementById('itemCantidad').value = Number(item.Cantidad) || 0;
                 document.getElementById('itemEstado').value = item.Estado || 'Bueno';
                 document.getElementById('itemUbicacion').value = item.Ubicacion_Fisica || '';
@@ -911,8 +918,8 @@
 
                 if (data.status === 'success' && Array.isArray(data.items)) {
                     inventario = data.items;
-                    guardarDatosLocales();
                     actualizarOpcionesDinamicas(data);
+                    guardarDatosLocales();
                     renderizarInventario();
 
                     const hora = new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
