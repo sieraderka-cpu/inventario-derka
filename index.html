@@ -109,8 +109,16 @@
             </div>
         </section>
 
-        <!-- Filtros y Búsqueda -->
+        <!-- Filtros, Área Fija de Trabajo y Búsqueda -->
         <section class="bg-white rounded-2xl p-3.5 sm:p-4 border border-slate-200/80 shadow-xs space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-indigo-50/80 border border-indigo-200/80 rounded-xl px-3 py-2">
+                <div class="text-xs text-indigo-950">
+                    <span class="font-bold">Área de trabajo fija:</span>
+                    <span class="text-indigo-800">se mantiene hasta que la cambies y define el prefijo del código nuevo.</span>
+                </div>
+                <select id="areaTrabajoFija" onchange="cambiarAreaTrabajoFija(this.value)" class="w-full sm:w-auto px-3 py-1.5 bg-white border border-indigo-300 rounded-lg text-xs font-bold text-indigo-950 focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
+            </div>
+
             <div class="flex flex-col sm:flex-row gap-2.5">
                 <div class="relative flex-1">
                     <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
@@ -181,11 +189,11 @@
                                 <i data-lucide="scan-line" class="w-4 h-4"></i>
                                 <span>Leer</span>
                             </button>
-                            <button type="button" onclick="generarCodigoSugerido()" title="Generar código según el área" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 shrink-0 cursor-pointer">
+                            <button type="button" onclick="generarCodigoSugerido()" title="Generar código según el área de trabajo" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 shrink-0 cursor-pointer">
                                 <i data-lucide="sparkles" class="w-4 h-4"></i>
                             </button>
                         </div>
-                        <p class="text-[11px] text-slate-400 mt-1">Usa <strong>Leer</strong> para vincular un QR/código de barras, <strong>✨</strong> para generar por siglas del área o escríbelo.</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Usa <strong>Leer</strong> para vincular un QR/código de barras, <strong>✨</strong> para generar con el área de trabajo o escríbelo.</p>
                     </div>
 
                     <div>
@@ -207,7 +215,7 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Área / Laboratorio</label>
-                        <select id="itemArea" onchange="actualizarSugerenciaCodigoSiVacio()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
+                        <select id="itemArea" onchange="sincronizarAreaTrabajoDesdeFormulario(this.value)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
                     </div>
 
                     <div>
@@ -304,7 +312,7 @@
                     </label>
                     <input id="inputUrlSheet" type="url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                     <p class="text-[11px] text-slate-500 mt-1">
-                        Solo se solicitará la primera vez en este dispositivo/navegador y quedará guardada para tu acceso directo.
+                        Solo se solicitará la primera vez en Chrome y quedará guardada para tu acceso directo.
                     </p>
                 </div>
 
@@ -330,6 +338,7 @@
         const SHEET_URL_KEY = 'derka_sheet_url';
         const META_CACHE_KEY = 'derka_meta_v1';
         const FIRST_PROMPT_SEEN_KEY = 'derka_first_sheet_prompt_v1';
+        const AREA_TRABAJO_KEY = 'derka_area_trabajo_v1';
 
         const CLASIFICACIONES_BASE = ['Muebles', 'Equipos', 'Herramientas', 'Elementos', 'Insumos', 'Otros'];
         const AREAS_BASE = ['Electrónica', 'Lab Fisica'];
@@ -377,6 +386,7 @@
         let inventario = [];
         let metaServidor = { areas: [], clasificaciones: [], estados: [] };
         let categoriaActiva = 'Todas';
+        let areaActivaTrabajo = '';
         let html5QrScanner = null;
         let modoEscaner = 'buscar';
 
@@ -418,7 +428,6 @@
             const utiles = palabras.length > 0 ? palabras : limpio.split(/\s+/);
 
             if (utiles.length >= 2) {
-                // Ej: "Area Administrativa" -> "ADM" o "AA"; si hay 2 palabras relevantes, toma primeras letras y completa hasta 3
                 const iniciales = utiles.map(p => p[0]).join('').toUpperCase();
                 if (iniciales.length >= 3) return iniciales.slice(0, 3);
                 const extra = utiles[1].slice(1, 3 - iniciales.length + 1).toUpperCase();
@@ -433,9 +442,7 @@
                 if (window.lucide && typeof window.lucide.createIcons === 'function') {
                     window.lucide.createIcons();
                 }
-            } catch (e) {
-                console.warn('Error cargando iconos:', e);
-            }
+            } catch (e) {}
         }
 
         function cargarDatosLocales() {
@@ -462,6 +469,8 @@
                         };
                     }
                 }
+
+                areaActivaTrabajo = (localStorage.getItem(AREA_TRABAJO_KEY) || '').trim();
             } catch (e) {
                 inventario = [...EJEMPLOS_INICIALES];
             }
@@ -471,9 +480,10 @@
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(inventario));
                 localStorage.setItem(META_CACHE_KEY, JSON.stringify(metaServidor));
-            } catch (e) {
-                console.warn('Error guardando en localStorage:', e);
-            }
+                if (areaActivaTrabajo) {
+                    localStorage.setItem(AREA_TRABAJO_KEY, areaActivaTrabajo);
+                }
+            } catch (e) {}
         }
 
         function capturarUrlDesdeQuerySiExiste() {
@@ -535,10 +545,10 @@
             };
         }
 
-        function poblarSelect(id, opciones, incluirTodas, textoTodas) {
+        function poblarSelect(id, opciones, incluirTodas, textoTodas, valorForzado = '') {
             const sel = document.getElementById(id);
             if (!sel) return;
-            const prev = sel.value;
+            const prev = valorForzado || sel.value;
 
             let html = '';
             if (incluirTodas) {
@@ -562,6 +572,35 @@
             }
         }
 
+        function cambiarAreaTrabajoFija(nuevaArea) {
+            areaActivaTrabajo = String(nuevaArea || '').trim();
+            guardarDatosLocales();
+
+            const itemArea = document.getElementById('itemArea');
+            if (itemArea && areaActivaTrabajo) {
+                const match = Array.from(itemArea.options).find(o => claveCanon(o.value) === claveCanon(areaActivaTrabajo));
+                if (match) itemArea.value = match.value;
+            }
+
+            const campoCodigo = document.getElementById('itemCodigoQR');
+            const idExistente = document.getElementById('itemId')?.value;
+            if (!idExistente && campoCodigo && !campoCodigo.value.trim()) {
+                generarCodigoSugerido();
+            }
+        }
+
+        function sincronizarAreaTrabajoDesdeFormulario(areaElegida) {
+            areaActivaTrabajo = String(areaElegida || '').trim();
+            guardarDatosLocales();
+            poblarSelect('areaTrabajoFija', obtenerListasCompletas().areas, false, '', areaActivaTrabajo);
+
+            const campoCodigo = document.getElementById('itemCodigoQR');
+            const idExistente = document.getElementById('itemId')?.value;
+            if (!idExistente && campoCodigo && !campoCodigo.value.trim()) {
+                generarCodigoSugerido();
+            }
+        }
+
         function actualizarOpcionesDinamicas(data = null) {
             if (data && typeof data === 'object') {
                 metaServidor = {
@@ -573,8 +612,14 @@
             }
 
             const listas = obtenerListasCompletas();
+            if (!areaActivaTrabajo && listas.areas.length > 0) {
+                areaActivaTrabajo = listas.areas[0];
+                guardarDatosLocales();
+            }
+
+            poblarSelect('areaTrabajoFija', listas.areas, false, '', areaActivaTrabajo);
             poblarSelect('filtroArea', listas.areas, true, 'Todas');
-            poblarSelect('itemArea', listas.areas, false, '');
+            poblarSelect('itemArea', listas.areas, false, '', areaActivaTrabajo);
             poblarSelect('filtroEstado', listas.estados, true, 'Todos');
             poblarSelect('itemEstado', listas.estados, false, '');
             poblarSelect('itemClasificacion', listas.clasificaciones, false, '');
@@ -730,7 +775,8 @@
 
         function abrirModal(item = null) {
             const listas = obtenerListasCompletas();
-            poblarSelect('itemArea', listas.areas, false, '');
+            const areaInicial = item?.Area_Laboratorio || areaActivaTrabajo || listas.areas[0] || '';
+            poblarSelect('itemArea', listas.areas, false, '', areaInicial);
             poblarSelect('itemEstado', listas.estados, false, '');
             poblarSelect('itemClasificacion', listas.clasificaciones, false, '');
 
@@ -763,6 +809,11 @@
                 document.getElementById('tituloModalElemento').textContent = 'Nuevo Elemento de Inventario';
                 document.getElementById('itemId').value = '';
                 document.getElementById('itemCantidad').value = 1;
+                if (areaInicial) {
+                    const matchArea = Array.from(document.getElementById('itemArea').options)
+                        .find(o => claveCanon(o.value) === claveCanon(areaInicial));
+                    if (matchArea) document.getElementById('itemArea').value = matchArea.value;
+                }
             }
 
             modal.classList.remove('hidden');
@@ -777,7 +828,7 @@
         }
 
         function generarCodigoSugerido() {
-            const area = document.getElementById('itemArea')?.value || 'General';
+            const area = document.getElementById('itemArea')?.value || areaActivaTrabajo || 'General';
             const prefijo = obtenerSiglasArea(area);
 
             let maxNum = 0;
@@ -791,16 +842,8 @@
             });
 
             const siguiente = maxNum + 1;
-            const parteNumerica = String(siguiente).padStart(3, '0'); // Funciona igual en 001, 999, 1000, 10000+
+            const parteNumerica = String(siguiente).padStart(3, '0');
             document.getElementById('itemCodigoQR').value = `${prefijo}-${parteNumerica}`;
-        }
-
-        function actualizarSugerenciaCodigoSiVacio() {
-            const campo = document.getElementById('itemCodigoQR');
-            const idExistente = document.getElementById('itemId')?.value;
-            if (!idExistente && campo && !campo.value.trim()) {
-                generarCodigoSugerido();
-            }
         }
 
         function procesarFotoArchivo(event) {
@@ -835,12 +878,15 @@
             const idExistente = document.getElementById('itemId').value.trim();
             const esEdicion = Boolean(idExistente);
 
+            const areaSeleccionada = document.getElementById('itemArea').value;
+            areaActivaTrabajo = areaSeleccionada;
+
             const itemObj = {
                 ID_Unico: idExistente || ('INV-' + Date.now()),
                 Codigo_QR: document.getElementById('itemCodigoQR').value.trim(),
                 Nombre_Elemento: document.getElementById('itemNombre').value.trim(),
                 Clasificacion_Inventario: document.getElementById('itemClasificacion').value,
-                Area_Laboratorio: document.getElementById('itemArea').value,
+                Area_Laboratorio: areaSeleccionada,
                 Ubicacion_Fisica: document.getElementById('itemUbicacion').value.trim(),
                 Cantidad: Number(document.getElementById('itemCantidad').value) || 0,
                 Estado: document.getElementById('itemEstado').value,
