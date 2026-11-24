@@ -181,11 +181,11 @@
                                 <i data-lucide="scan-line" class="w-4 h-4"></i>
                                 <span>Leer</span>
                             </button>
-                            <button type="button" onclick="generarCodigoSugerido()" title="Generar código automático" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 shrink-0 cursor-pointer">
+                            <button type="button" onclick="generarCodigoSugerido()" title="Generar código según el área" class="px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border border-slate-200 shrink-0 cursor-pointer">
                                 <i data-lucide="sparkles" class="w-4 h-4"></i>
                             </button>
                         </div>
-                        <p class="text-[11px] text-slate-400 mt-1">Usa <strong>Leer</strong> para vincular un QR/código de barras existente, <strong>✨</strong> para autogenerar o escríbelo.</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Usa <strong>Leer</strong> para vincular un QR/código de barras, <strong>✨</strong> para generar por siglas del área o escríbelo.</p>
                     </div>
 
                     <div>
@@ -207,7 +207,7 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Área / Laboratorio</label>
-                        <select id="itemArea" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
+                        <select id="itemArea" onchange="actualizarSugerenciaCodigoSiVacio()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
                     </div>
 
                     <div>
@@ -266,7 +266,7 @@
         </div>
     </div>
 
-    <!-- Modal Escáner QR y Código de Barras (z-50 para quedar encima de modalElemento) -->
+    <!-- Modal Escáner QR y Código de Barras -->
     <div id="modalEscaner" class="fixed inset-0 z-50 hidden modal-backdrop items-center justify-center p-4">
         <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl border border-slate-200">
             <div class="px-4 py-3 bg-slate-900 text-white flex items-center justify-between">
@@ -304,7 +304,7 @@
                     </label>
                     <input id="inputUrlSheet" type="url" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                     <p class="text-[11px] text-slate-500 mt-1">
-                        Se guarda únicamente en este dispositivo y no queda expuesta en GitHub.
+                        Solo se solicitará la primera vez en este dispositivo/navegador y quedará guardada para tu acceso directo.
                     </p>
                 </div>
 
@@ -329,6 +329,7 @@
         const STORAGE_KEY = 'derka_inventario_v1';
         const SHEET_URL_KEY = 'derka_sheet_url';
         const META_CACHE_KEY = 'derka_meta_v1';
+        const FIRST_PROMPT_SEEN_KEY = 'derka_first_sheet_prompt_v1';
 
         const CLASIFICACIONES_BASE = ['Muebles', 'Equipos', 'Herramientas', 'Elementos', 'Insumos', 'Otros'];
         const AREAS_BASE = ['Electrónica', 'Lab Fisica'];
@@ -377,7 +378,7 @@
         let metaServidor = { areas: [], clasificaciones: [], estados: [] };
         let categoriaActiva = 'Todas';
         let html5QrScanner = null;
-        let modoEscaner = 'buscar'; // 'buscar' | 'formulario'
+        let modoEscaner = 'buscar';
 
         function claveCanon(texto) {
             return String(texto || '')
@@ -401,6 +402,30 @@
                 });
             });
             return Array.from(mapa.values());
+        }
+
+        function obtenerSiglasArea(nombreArea) {
+            const limpio = String(nombreArea || '')
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-zA-Z0-9\s]/g, ' ')
+                .trim();
+
+            if (!limpio) return 'GEN';
+
+            const ignorar = new Set(['de', 'del', 'la', 'las', 'el', 'los', 'y', 'en', 'para', 'por']);
+            const palabras = limpio.split(/\s+/).filter(p => p && !ignorar.has(p.toLowerCase()));
+            const utiles = palabras.length > 0 ? palabras : limpio.split(/\s+/);
+
+            if (utiles.length >= 2) {
+                // Ej: "Area Administrativa" -> "ADM" o "AA"; si hay 2 palabras relevantes, toma primeras letras y completa hasta 3
+                const iniciales = utiles.map(p => p[0]).join('').toUpperCase();
+                if (iniciales.length >= 3) return iniciales.slice(0, 3);
+                const extra = utiles[1].slice(1, 3 - iniciales.length + 1).toUpperCase();
+                return (iniciales + extra).slice(0, 3).padEnd(3, 'X');
+            }
+
+            return utiles[0].slice(0, 3).toUpperCase().padEnd(3, 'X');
         }
 
         function refrescarIconos() {
@@ -449,6 +474,18 @@
             } catch (e) {
                 console.warn('Error guardando en localStorage:', e);
             }
+        }
+
+        function capturarUrlDesdeQuerySiExiste() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const urlParam = (params.get('sheet') || '').trim();
+                if (urlParam && urlParam.includes('script.google.com')) {
+                    localStorage.setItem(SHEET_URL_KEY, urlParam);
+                    localStorage.setItem(FIRST_PROMPT_SEEN_KEY, '1');
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            } catch (e) {}
         }
 
         function obtenerUrlSheet() {
@@ -740,9 +777,30 @@
         }
 
         function generarCodigoSugerido() {
-            const area = (document.getElementById('itemArea').value || 'LAB').substring(0, 3).toUpperCase().replace(/[^A-Z]/g, 'L');
-            const num = String(inventario.length + 1).padStart(3, '0');
-            document.getElementById('itemCodigoQR').value = `${area}-${num}`;
+            const area = document.getElementById('itemArea')?.value || 'General';
+            const prefijo = obtenerSiglasArea(area);
+
+            let maxNum = 0;
+            inventario.forEach(item => {
+                const cod = String(item.Codigo_QR || '').trim().toUpperCase();
+                const match = cod.match(new RegExp(`^${prefijo}[-_]?(\\d+)$`));
+                if (match) {
+                    const n = parseInt(match[1], 10);
+                    if (!Number.isNaN(n) && n > maxNum) maxNum = n;
+                }
+            });
+
+            const siguiente = maxNum + 1;
+            const parteNumerica = String(siguiente).padStart(3, '0'); // Funciona igual en 001, 999, 1000, 10000+
+            document.getElementById('itemCodigoQR').value = `${prefijo}-${parteNumerica}`;
+        }
+
+        function actualizarSugerenciaCodigoSiVacio() {
+            const campo = document.getElementById('itemCodigoQR');
+            const idExistente = document.getElementById('itemId')?.value;
+            if (!idExistente && campo && !campo.value.trim()) {
+                generarCodigoSugerido();
+            }
         }
 
         function procesarFotoArchivo(event) {
@@ -883,7 +941,6 @@
             }
 
             try {
-                // Soporta QR y códigos de barras estándar (Code-128, EAN-13, EAN-8, UPC, Code-39, ITF, Codabar)
                 const formatosSoportados = window.Html5QrcodeSupportedFormats ? [
                     Html5QrcodeSupportedFormats.QR_CODE,
                     Html5QrcodeSupportedFormats.CODE_128,
@@ -945,6 +1002,9 @@
         }
 
         function cerrarModalSheet() {
+            try {
+                localStorage.setItem(FIRST_PROMPT_SEEN_KEY, '1');
+            } catch (e) {}
             const modal = document.getElementById('modalSheet');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
@@ -957,6 +1017,7 @@
                 return;
             }
             localStorage.setItem(SHEET_URL_KEY, url);
+            localStorage.setItem(FIRST_PROMPT_SEEN_KEY, '1');
             actualizarIndicadorSheet();
             cerrarModalSheet();
             sincronizarDesdeSheets(true);
@@ -1057,14 +1118,21 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            capturarUrlDesdeQuerySiExiste();
             cargarDatosLocales();
             actualizarIndicadorSheet();
             actualizarOpcionesDinamicas();
             renderizarInventario();
             refrescarIconos();
 
-            if (obtenerUrlSheet()) {
+            const urlActual = obtenerUrlSheet();
+            if (urlActual) {
                 sincronizarDesdeSheets(false);
+            } else {
+                const yaPreguntado = localStorage.getItem(FIRST_PROMPT_SEEN_KEY);
+                if (!yaPreguntado) {
+                    abrirModalSheet();
+                }
             }
         });
     </script>
